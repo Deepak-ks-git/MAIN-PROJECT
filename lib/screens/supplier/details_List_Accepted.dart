@@ -26,7 +26,7 @@ class _DetailsListAcceptedState extends State<DetailsListAccepted> {
   Future<void> fetchPurchaseRequestId() async {
     try {
       final response = await http.get(Uri.parse(
-          'http://192.168.0.102:3000/get_purchase_reqid?procId=${widget.procId}'));
+          'http://192.168.1.142:3000/get_purchase_reqid?procId=${widget.procId}'));
 
       if (response.statusCode == 200) {
         final List<dynamic> data = json.decode(response.body);
@@ -44,7 +44,7 @@ class _DetailsListAcceptedState extends State<DetailsListAccepted> {
   Future<void> fetchdetailsListAccepted() async {
     try {
       final response = await http.get(Uri.parse(
-          'http://192.168.0.102:3000/Item_Reqeust_details?procId=${widget.procId}'));
+          'http://192.168.1.142:3000/Item_Reqeust_details?procId=${widget.procId}'));
 
       if (response.statusCode == 200) {
         final List<dynamic> data = json.decode(response.body);
@@ -62,7 +62,7 @@ class _DetailsListAcceptedState extends State<DetailsListAccepted> {
   Future<void> createQuotation() async {
     try {
       final response = await http.post(
-        Uri.parse('http://192.168.0.102:3000/create_quotation'),
+        Uri.parse('http://192.168.1.142:3000/create_quotation'),
         body: json.encode({
           'PURCHASE_REQ_ID': purchaseReqId,
           'ITEM_DETAILS': items.map((item) => {'ITEM_ID': item[0]}).toList(),

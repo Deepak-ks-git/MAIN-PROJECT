@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:project3/screens/manager/DetailedSupplierInfo.dart';
@@ -21,7 +22,7 @@ class _BlacklistedSuppliersState extends State<BlacklistedSuppliers> {
 
   Future<List<List<String>>> fetchBlacklistedSuppliers() async {
     final response =
-        await http.get(Uri.parse('http://192.168.0.102:3000/blacklisted_suppliers'));
+        await http.get(Uri.parse('http://192.168.1.142:3000/blacklisted_suppliers'));
 
     if (response.statusCode == 200) {
       List<dynamic> data = jsonDecode(response.body);

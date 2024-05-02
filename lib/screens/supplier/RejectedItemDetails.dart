@@ -24,7 +24,7 @@ class _PurchaseItemsState extends State<RejectedItemDetails> {
   Future<void> fetchPurchaseItems() async {
     try {
       final response = await http.get(Uri.parse(
-          'http://192.168.0.102:3000/Item_Reqeust_details?procId=${widget.procId}'));
+          'http://192.168.1.142:3000/Item_Reqeust_details?procId=${widget.procId}'));
       print('Response body: ${response.body}');
 
       if (response.statusCode == 200) {

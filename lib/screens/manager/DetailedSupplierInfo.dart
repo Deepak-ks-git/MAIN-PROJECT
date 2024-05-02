@@ -21,7 +21,7 @@ class _DetailedSupplierInfoState extends State<DetailedSupplierInfo> {
   }
 
   Future<List<String?>> fetchSupplierDetails(String supplierId) async {
-    final response = await http.get(Uri.parse('http://192.168.0.102:3000/SupplierDetails?username=$supplierId'));
+    final response = await http.get(Uri.parse('http://192.168.1.142:3000/SupplierDetails?username=$supplierId'));
 
     if (response.statusCode == 200) {
       List<dynamic> data = jsonDecode(response.body);

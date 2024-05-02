@@ -15,19 +15,19 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Man_OnGoing_Procurements(),
+      home: Man_Complete_Procurements(),
     );
   }
 }
 
-class Man_OnGoing_Procurements extends StatefulWidget {
-  const Man_OnGoing_Procurements({Key? key}) : super(key: key);
+class Man_Complete_Procurements extends StatefulWidget {
+  const Man_Complete_Procurements({Key? key}) : super(key: key);
 
   @override
-  State<Man_OnGoing_Procurements> createState() => _ViewProcurementsState();
+  State<Man_Complete_Procurements> createState() => _ViewProcurementsState();
 }
 
-class _ViewProcurementsState extends State<Man_OnGoing_Procurements> {
+class _ViewProcurementsState extends State<Man_Complete_Procurements> {
   List<Procure> procurements = [];
 
   @override

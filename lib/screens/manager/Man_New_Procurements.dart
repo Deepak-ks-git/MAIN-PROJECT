@@ -37,7 +37,7 @@ class _ViewProcurementsState extends State<Man_New_Procurements> {
 
   Future<void> fetchProcurements() async {
     try {
-      final response = await http.get(Uri.parse('http://192.168.0.102:3000/Man_new_proc'));
+      final response = await http.get(Uri.parse('http://192.168.1.142:3000/Man_new_proc'));
       if (response.statusCode == 200) {
         final List<dynamic> data = json.decode(response.body);
         setState(() {

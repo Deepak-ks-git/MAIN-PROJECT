@@ -24,7 +24,7 @@ class _PurchaseItemsState extends State<PurchaseItems> {
   Future<void> fetchPurchaseItems() async {
     try {
       final response = await http.get(Uri.parse(
-          'http://192.168.0.102:3000/Item_Reqeust_details?procId=${widget.procId}'));
+          'http://192.168.1.142:3000/Item_Reqeust_details?procId=${widget.procId}'));
       print('Response body: ${response.body}');
 
       if (response.statusCode == 200) {
@@ -43,7 +43,7 @@ class _PurchaseItemsState extends State<PurchaseItems> {
   Future<void> acceptRequest() async {
     try {
       final response = await http.post(
-        Uri.parse('http://192.168.0.102:3000/ACCEPT_REQUEST'),
+        Uri.parse('http://192.168.1.142:3000/ACCEPT_REQUEST'),
         body: json.encode({'procId': widget.procId}),
         headers: {'Content-Type': 'application/json'},
       );
@@ -63,7 +63,7 @@ class _PurchaseItemsState extends State<PurchaseItems> {
   Future<void> rejectRequest() async {
     try {
       final response = await http.post(
-        Uri.parse('http://192.168.0.102:3000/REJECT_REQUEST'),
+        Uri.parse('http://192.168.1.142:3000/REJECT_REQUEST'),
         body: json.encode({'procId': widget.procId}),
         headers: {'Content-Type': 'application/json'},
       );

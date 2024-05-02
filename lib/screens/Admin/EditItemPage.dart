@@ -33,7 +33,7 @@ class _EditItemPageState extends State<EditItemPage> {
 
 Future<void> EditItem() async {
   final response = await http.post(
-    Uri.parse('http://192.168.0.102:3000/EditItem'),
+    Uri.parse('http://192.168.1.142:3000/EditItem'),
     body: {
     
       'name': _nameController.text,

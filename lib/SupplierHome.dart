@@ -31,7 +31,7 @@ class _SupplierHomeState extends State<SupplierHome> {
 
   Future<void> fetchSupplierName(String username) async {
     try {
-      final response = await http.get(Uri.parse('http://192.168.0.102:3000/user_name_get?userId=$username'));
+      final response = await http.get(Uri.parse('http://192.168.1.142:3000/user_name_get?userId=$username'));
       if (response.statusCode == 200) {
         final List<dynamic> data = json.decode(response.body);
         setState(() {

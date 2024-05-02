@@ -25,7 +25,7 @@ class _Accepted_RequestState extends State<Unsended_quot> {
 
   Future<void> fetchNewRequests() async {
     try {
-      final response = await http.get(Uri.parse('http://192.168.0.102:3000/NOTSENDED_of_Quotation?username=${widget.username}'));
+      final response = await http.get(Uri.parse('http://192.168.1.142:3000/NOTSENDED_of_Quotation?username=${widget.username}'));
       print('Response body: ${response.body}');
 
       if (response.statusCode == 200) {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project3/screens/Admin/ALL_proc.dart';
 import 'package:project3/screens/Admin/CreateProcurement.dart';
 import 'package:project3/screens/Admin/add_managers_screen.dart';
 
@@ -38,61 +39,17 @@ class NavHomePage extends StatelessWidget {
                   },
                 ),
                 FeatureTile(
-                  icon: Icons.payment,
-                  text: 'Process Payments',
+                  icon: Icons.shopping_cart,
+                  text: 'Procurements',
                   onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ALL_proc()),
+                    );
                     // Handle onPressed event
                   },
                 ),
-                FeatureTile(
-                  icon: Icons.inventory,
-                  text: 'Manage Inventory',
-                  onPressed: () {
-                    // Handle onPressed event
-                  },
-                ),
-                FeatureTile(
-                  icon: Icons.analytics,
-                  text: 'View Analytics',
-                  onPressed: () {
-                    // Handle onPressed event
-                  },
-                ),
-                FeatureTile(
-                  icon: Icons.report,
-                  text: 'Generate Reports',
-                  onPressed: () {
-                    // Handle onPressed event
-                  },
-                ),
-                FeatureTile(
-                  icon: Icons.settings,
-                  text: 'Settings',
-                  onPressed: () {
-                    // Handle onPressed event
-                  },
-                ),
-                FeatureTile(
-                  icon: Icons.notifications,
-                  text: 'Manage Notifications',
-                  onPressed: () {
-                    // Handle onPressed event
-                  },
-                ),
-                FeatureTile(
-                  icon: Icons.mail,
-                  text: 'Send Emails',
-                  onPressed: () {
-                    // Handle onPressed event
-                  },
-                ),
-                FeatureTile(
-                  icon: Icons.help,
-                  text: 'Help & Support',
-                  onPressed: () {
-                    // Handle onPressed event
-                  },
-                ),
+                
                 // Add more FeatureTiles as needed
               ],
             ),

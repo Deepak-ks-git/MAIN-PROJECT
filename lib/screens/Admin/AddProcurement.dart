@@ -21,7 +21,7 @@ class _AddItemScreenState extends State<AddProcurement> {
 
   Future<void> addProcList() async {
     final response = await http.post(
-      Uri.parse('http://192.168.0.102:3000/addProc'),
+      Uri.parse('http://192.168.1.142:3000/addProc'),
       body: {
 
         'status':'CREATED',

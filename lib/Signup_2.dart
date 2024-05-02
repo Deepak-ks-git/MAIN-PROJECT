@@ -50,7 +50,7 @@ class _Signup_2State extends State<Signup_2> {
     final String phone = widget.phone;
 
     final response = await http.post(
-      Uri.parse('http://192.168.0.102:3000/s_register'),
+      Uri.parse('http://192.168.1.142:3000/s_register'),
       body: {
         'supplier_id': supplier_id,
         'password': password,

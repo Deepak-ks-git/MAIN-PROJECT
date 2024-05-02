@@ -25,7 +25,7 @@ class _EmpLoginState extends State<LoginPage> {
   Future<void> UserLogin() async {
     final String user = username.text;
     final response = await http.get(
-      Uri.parse('http://192.168.0.102:3000/username?user=$user'),
+      Uri.parse('http://192.168.1.142:3000/username?user=$user'),
     );
     if (response.statusCode == 200) {
       final Map<String, dynamic> data = json.decode(response.body);
@@ -39,7 +39,7 @@ class _EmpLoginState extends State<LoginPage> {
     } else {
       final String pass = password.text;
       final response = await http.get(
-        Uri.parse('http://192.168.0.102:3000/login?user=$user&pass=$pass'),
+        Uri.parse('http://192.168.1.142:3000/login?user=$user&pass=$pass'),
       );
 
       if (response.statusCode == 200) {
@@ -49,7 +49,7 @@ class _EmpLoginState extends State<LoginPage> {
       }
       if (message2 == 'valid') {
         final roleResponse = await http.get(
-          Uri.parse('http://192.168.0.102:3000/role?user=$user'),
+          Uri.parse('http://192.168.1.142:3000/role?user=$user'),
         );
         if (roleResponse.statusCode == 200) {
           final Map<String, dynamic> roleData = json.decode(roleResponse.body);
@@ -94,7 +94,7 @@ class _EmpLoginState extends State<LoginPage> {
                 children: [
                   Text(
                     "Welcome Back",
-                    style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                   ),
                   Text("Enter your credential to login"),
                 ],
@@ -110,13 +110,15 @@ class _EmpLoginState extends State<LoginPage> {
                         borderRadius: BorderRadius.circular(18),
                         borderSide: BorderSide.none,
                       ),
-                      fillColor:
-                          Color.fromARGB(255, 52, 86, 208).withOpacity(0.1),
                       filled: true,
                       prefixIcon: const Icon(Icons.person),
+                      contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 15), // Adjust padding
+                    ),
+                    style: TextStyle(
+                      height: 0.5, // Adjust height
                     ),
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 5), // Reduced height between input boxes
                   TextField(
                     controller: password,
                     decoration: InputDecoration(
@@ -125,14 +127,16 @@ class _EmpLoginState extends State<LoginPage> {
                         borderRadius: BorderRadius.circular(18),
                         borderSide: BorderSide.none,
                       ),
-                      fillColor:
-                          Color.fromARGB(255, 52, 86, 208).withOpacity(0.1),
                       filled: true,
                       prefixIcon: const Icon(Icons.password),
+                      contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 15), // Adjust padding
                     ),
                     obscureText: true,
+                    style: TextStyle(
+                      height: 0.5, // Adjust height
+                    ),
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 10), // Reduced height between input boxes and button
                   ElevatedButton(
                     onPressed: () async {
                       if (username.text.isEmpty && password.text.isEmpty) {
@@ -146,8 +150,10 @@ class _EmpLoginState extends State<LoginPage> {
                       }
                     },
                     style: ElevatedButton.styleFrom(
-                      shape: const StadiumBorder(),
-                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18),
+                      ),
+                      padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 50), // Adjust padding
                       backgroundColor: Color.fromARGB(255, 4, 18, 67),
                     ),
                     child: const Text(

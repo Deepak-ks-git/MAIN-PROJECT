@@ -39,63 +39,7 @@ class ManHomeNav extends StatelessWidget {
                     // Handle onPressed event
                   },
                 ),
-                FeatureTile(
-                  icon: Icons.payment,
-                  text: 'Process Payments',
-                  onPressed: () {
-                    // Handle onPressed event
-                  },
-                ),
-                FeatureTile(
-                  icon: Icons.inventory,
-                  text: 'Manage Inventory',
-                  onPressed: () {
-                    // Handle onPressed event
-                  },
-                ),
-                FeatureTile(
-                  icon: Icons.analytics,
-                  text: 'View Analytics',
-                  onPressed: () {
-                    // Handle onPressed event
-                  },
-                ),
-                FeatureTile(
-                  icon: Icons.report,
-                  text: 'Generate Reports',
-                  onPressed: () {
-                    // Handle onPressed event
-                  },
-                ),
-                FeatureTile(
-                  icon: Icons.settings,
-                  text: 'Settings',
-                  onPressed: () {
-                    // Handle onPressed event
-                  },
-                ),
-                FeatureTile(
-                  icon: Icons.notifications,
-                  text: 'Manage Notifications',
-                  onPressed: () {
-                    // Handle onPressed event
-                  },
-                ),
-                FeatureTile(
-                  icon: Icons.mail,
-                  text: 'Send Emails',
-                  onPressed: () {
-                    // Handle onPressed event
-                  },
-                ),
-                FeatureTile(
-                  icon: Icons.help,
-                  text: 'Help & Support',
-                  onPressed: () {
-                    // Handle onPressed event
-                  },
-                ),
-                // Add more FeatureTiles as needed
+              
               ],
             ),
           ],

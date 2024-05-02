@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:project3/screens/Admin/ViewItems.dart';
-
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 
@@ -23,7 +22,7 @@ class _AddItemScreenState extends State<AddItemScreen> {
 
   Future<void> addItem() async {
     final response = await http.post(
-      Uri.parse('http://192.168.0.102:3000/add_item'),
+      Uri.parse('http://192.168.1.142:3000/add_item'),
       body: {
         'name': pname.text,
         'color': color.text,

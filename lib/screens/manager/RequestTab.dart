@@ -32,7 +32,7 @@ class _RequestTabState extends State<RequestTab> {
   Future<List<dynamic>> fetchPurchaseRequestDetails() async {
     try {
       final response = await http.get(Uri.parse(
-          'http://192.168.0.102:3000/reqdetails_for_sending?procId=${widget.procId}'));
+          'http://192.168.1.142:3000/reqdetails_for_sending?procId=${widget.procId}'));
 
       if (response.statusCode == 200) {
         return jsonDecode(response.body);
@@ -47,7 +47,7 @@ class _RequestTabState extends State<RequestTab> {
   Future<List<dynamic>> fetchSupplierDetails(String supplierId) async {
     try {
       final response = await http.get(Uri.parse(
-          'http://192.168.0.102:3000/supplier_details_for_sending?supplierId=$supplierId'));
+          'http://192.168.1.142:3000/supplier_details_for_sending?supplierId=$supplierId'));
 
       if (response.statusCode == 200) {
         return jsonDecode(response.body);
@@ -62,7 +62,7 @@ class _RequestTabState extends State<RequestTab> {
   Future<void> removeSupplier(String procId) async {
     try {
       final response = await http.post(
-        Uri.parse('http://192.168.0.102:3000/drop_selected_supplier'),
+        Uri.parse('http://192.168.1.142:3000/drop_selected_supplier'),
         body: jsonEncode({'procId': procId}),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
@@ -220,7 +220,7 @@ class _RequestTabState extends State<RequestTab> {
                                                             Navigator.of(context).pop();
                                                             try {
                                                               final response = await http.post(
-                                                                Uri.parse('http://192.168.0.102:3000/insert_and_update_purchase_request_detail'),
+                                                                Uri.parse('http://192.168.1.142:3000/insert_and_update_purchase_request_detail'),
                                                                 body: jsonEncode({
                                                                   'PURCH_REQ_ID': purchaseReqId,
                                                                   'procId': widget.procId,

@@ -34,7 +34,7 @@ class _CompanyRegisterPageState extends State<CompanyRegisterPage> {
 
     // Check if username already exists
     final usernameResponse = await http.get(
-      Uri.parse('http://192.168.0.102:3000/cid?cid=$cid'),
+      Uri.parse('http://192.168.1.142:3000/cid?cid=$cid'),
     );
     if (usernameResponse.statusCode == 200) {
       final Map<String, dynamic> userData = json.decode(usernameResponse.body);
@@ -50,7 +50,7 @@ class _CompanyRegisterPageState extends State<CompanyRegisterPage> {
 
     // Check if email already exists
     final emailResponse = await http.get(
-      Uri.parse('http://192.168.0.102:3000/c_email?email=$email'),
+      Uri.parse('http://192.168.1.142:3000/c_email?email=$email'),
     );
     if (emailResponse.statusCode == 200) {
       final Map<String, dynamic> emailData = json.decode(emailResponse.body);
@@ -66,7 +66,7 @@ class _CompanyRegisterPageState extends State<CompanyRegisterPage> {
 
     // Check if phone number already exists
     final phoneResponse = await http.get(
-      Uri.parse('http://192.168.0.102:3000/c_name?cname=$cname'),
+      Uri.parse('http://192.168.1.142:3000/c_name?cname=$cname'),
     );
     if (phoneResponse.statusCode == 200) {
       final Map<String, dynamic> phoneData = json.decode(phoneResponse.body);
@@ -84,7 +84,7 @@ class _CompanyRegisterPageState extends State<CompanyRegisterPage> {
 
     if (message == 'new company') {
       final response = await http.post(
-        Uri.parse('http://192.168.0.102:3000/company_register'),
+        Uri.parse('http://192.168.1.142:3000/company_register'),
         body: {
           'id': id.text,
           'name': name.text,

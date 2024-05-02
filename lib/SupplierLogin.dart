@@ -25,7 +25,7 @@ class _EmpLoginState extends State<SupplierLogin> {
   Future<void> UserLogin() async {
     final String user = username.text;
     final response = await http.get(
-      Uri.parse('http://192.168.0.102:3000/s_username?user=$user'),
+      Uri.parse('http://192.168.1.142:3000/s_username?user=$user'),
     );
     if (response.statusCode == 200) {
       final Map<String, dynamic> data = json.decode(response.body);
@@ -39,7 +39,7 @@ class _EmpLoginState extends State<SupplierLogin> {
     } else {
       final String pass = password.text;
       final response = await http.get(
-        Uri.parse('http://192.168.0.102:3000/s_password?pass=$pass'),
+        Uri.parse('http://192.168.1.142:3000/s_password?pass=$pass'),
       );
       if (response.statusCode == 200) {
         final Map<String, dynamic> data = json.decode(response.body);

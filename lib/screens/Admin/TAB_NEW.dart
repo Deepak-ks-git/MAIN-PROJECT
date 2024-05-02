@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
-import 'package:project3/screens/manager/Details_OnGoing_proc.dart';
+import 'package:project3/screens/Admin/New_DETAILS.dart';
 
 // Importing ProcurementDetailsPage.dart
 
@@ -15,19 +15,19 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Man_OnGoing_Procurements(),
+      home: TAB_NEW(),
     );
   }
 }
 
-class Man_OnGoing_Procurements extends StatefulWidget {
-  const Man_OnGoing_Procurements({Key? key}) : super(key: key);
+class TAB_NEW extends StatefulWidget {
+  const TAB_NEW({Key? key}) : super(key: key);
 
   @override
-  State<Man_OnGoing_Procurements> createState() => _ViewProcurementsState();
+  State<TAB_NEW> createState() => _ViewProcurementsState();
 }
 
-class _ViewProcurementsState extends State<Man_OnGoing_Procurements> {
+class _ViewProcurementsState extends State<TAB_NEW> {
   List<Procure> procurements = [];
 
   @override
@@ -38,14 +38,11 @@ class _ViewProcurementsState extends State<Man_OnGoing_Procurements> {
 
   Future<void> fetchProcurements() async {
     try {
-      final response =
-          await http.get(Uri.parse('http://192.168.1.142:3000/Ongoing_proc'));
+      final response = await http.get(Uri.parse('http://192.168.1.142:3000/ADMIN_new_proc'));
       if (response.statusCode == 200) {
         final List<dynamic> data = json.decode(response.body);
         setState(() {
-          procurements = data
-              .map((procurementData) => Procure.fromJson(procurementData))
-              .toList();
+          procurements = data.map((procurementData) => Procure.fromJson(procurementData)).toList();
         });
       } else {
         throw Exception('Failed to load procurements');
@@ -65,8 +62,8 @@ class _ViewProcurementsState extends State<Man_OnGoing_Procurements> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor:
-          Colors.grey.withOpacity(0.5), // Background color with shading
+     
+      backgroundColor: Colors.grey.withOpacity(0.5), // Background color with shading
       body: Padding(
         padding: const EdgeInsets.all(8.0), // Padding around the GridView
         child: GridView.builder(
@@ -83,8 +80,7 @@ class _ViewProcurementsState extends State<Man_OnGoing_Procurements> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) =>
-                        Details_OnGoing_proc(procId: procurement.procId),
+                    builder: (context) => New_DETAILS(procId: procurement.procId),
                   ),
                 );
               },
@@ -112,12 +108,10 @@ class _ViewProcurementsState extends State<Man_OnGoing_Procurements> {
                       ),
                     ),
                     SizedBox(height: 8),
-                    Flexible(
-                      // Use Flexible widget to allow wrapping
+                    Flexible( // Use Flexible widget to allow wrapping
                       child: Text(
                         '${procurement.description}',
-                        style: TextStyle(
-                            fontSize: 14, fontWeight: FontWeight.bold),
+                        style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                       ),
                     ),
                     SizedBox(height: 4),

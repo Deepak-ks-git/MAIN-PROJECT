@@ -58,7 +58,7 @@ class _EditSupplierInfoState extends State<EditSupplierInfo> {
 
   Future<void> editSupplierDetails() async {
     final response = await http.post(
-      Uri.parse('http://192.168.0.102:3000/EditSupplierDetails'),
+      Uri.parse('http://192.168.1.142:3000/EditSupplierDetails'),
       body: {
         'username': widget
             .supplierDetails[0], // Assuming supplier_id is passed as username

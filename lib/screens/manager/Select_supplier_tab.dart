@@ -31,7 +31,7 @@ class _SelectSupplierTabState extends State<SelectSupplierTab> {
 
   Future<List<List<String>>> fetchSelectSupplierTab() async {
     final response =
-        await http.get(Uri.parse('http://192.168.0.102:3000/active_suppliers'));
+        await http.get(Uri.parse('http://192.168.1.142:3000/active_suppliers'));
 
     if (response.statusCode == 200) {
       List<dynamic> data = jsonDecode(response.body);
@@ -173,7 +173,7 @@ class _SelectSupplierTabState extends State<SelectSupplierTab> {
                 // Call the API endpoint
                 try {
                   final response = await http.post(
-                    Uri.parse('http://192.168.0.102:3000/Select_supplier'),
+                    Uri.parse('http://192.168.1.142:3000/Select_supplier'),
                     body: jsonEncode({
                       'procId': widget.procId,
                       'user_id': 'man10', // Replace with your actual user id
@@ -211,7 +211,7 @@ class _SelectSupplierTabState extends State<SelectSupplierTab> {
     }
 
     final response = await http.get(
-      Uri.parse('http://192.168.0.102:3000/purchase_request_status?procId=$procId'),
+      Uri.parse('http://192.168.1.142:3000/purchase_request_status?procId=$procId'),
     );
     if (response.statusCode == 200) {
       final jsonResponse = jsonDecode(response.body);

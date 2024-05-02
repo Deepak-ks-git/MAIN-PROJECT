@@ -30,7 +30,7 @@ class _SignupPageState extends State<SignupPage> {
     final String phoneno = phone.text;
 
     final usernameResponse = await http.get(
-      Uri.parse('http://192.168.0.102:3000/s_id?user=$user'),
+      Uri.parse('http://192.168.1.142:3000/s_id?user=$user'),
     );
     if (usernameResponse.statusCode == 200) {
       final Map<String, dynamic> userData = json.decode(usernameResponse.body);
@@ -45,7 +45,7 @@ class _SignupPageState extends State<SignupPage> {
     }
 
     final emailResponse = await http.get(
-      Uri.parse('http://192.168.0.102:3000/s_email?email=$mail'),
+      Uri.parse('http://192.168.1.142:3000/s_email?email=$mail'),
     );
     if (emailResponse.statusCode == 200) {
       final Map<String, dynamic> emailData = json.decode(emailResponse.body);
@@ -60,7 +60,7 @@ class _SignupPageState extends State<SignupPage> {
     }
 
     final phoneResponse = await http.get(
-      Uri.parse('http://192.168.0.102:3000/s_phone?phone=$phoneno'),
+      Uri.parse('http://192.168.1.142:3000/s_phone?phone=$phoneno'),
     );
     if (phoneResponse.statusCode == 200) {
       final Map<String, dynamic> phoneData = json.decode(phoneResponse.body);

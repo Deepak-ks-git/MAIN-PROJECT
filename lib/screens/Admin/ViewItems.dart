@@ -35,7 +35,7 @@ class _ViewItemsState extends State<ViewItems> {
 
   Future<void> fetchItems() async {
     try {
-      final response = await http.get(Uri.parse('http://192.168.0.102:3000/getItems'));
+      final response = await http.get(Uri.parse('http://192.168.1.142:3000/getItems'));
       if (response.statusCode == 200) {
         final List<dynamic> data = json.decode(response.body);
         setState(() {

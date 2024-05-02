@@ -2,10 +2,10 @@ import 'dart:convert';
 
 import 'package:emailjs/emailjs.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:project3/AdminHome.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
-import 'package:http/http.dart' as http;
 
 class AddManagersScreen extends StatefulWidget {
   const AddManagersScreen({Key? key}) : super(key: key);
@@ -35,7 +35,7 @@ class _AdminSignUpState extends State<AddManagersScreen> {
 
     // Check if username already exists
     final usernameResponse = await http.get(
-      Uri.parse('http://192.168.0.102:3000/emp_id?user=$user'),
+      Uri.parse('http://192.168.1.142:3000/emp_id?user=$user'),
     );
     if (usernameResponse.statusCode == 200) {
       final Map<String, dynamic> userData = json.decode(usernameResponse.body);
@@ -51,7 +51,7 @@ class _AdminSignUpState extends State<AddManagersScreen> {
 
     // Check if email already exists
     final emailResponse = await http.get(
-      Uri.parse('http://192.168.0.102:3000/emp_email?email=$mail'),
+      Uri.parse('http://192.168.1.142:3000/emp_email?email=$mail'),
     );
     if (emailResponse.statusCode == 200) {
       final Map<String, dynamic> emailData = json.decode(emailResponse.body);
@@ -67,7 +67,7 @@ class _AdminSignUpState extends State<AddManagersScreen> {
 
     // Check if phone number already exists
     final phoneResponse = await http.get(
-      Uri.parse('http://192.168.0.102:3000/emp_phone?phone=$phoneno'),
+      Uri.parse('http://192.168.1.142:3000/emp_phone?phone=$phoneno'),
     );
     if (phoneResponse.statusCode == 200) {
       final Map<String, dynamic> phoneData = json.decode(phoneResponse.body);
@@ -90,7 +90,7 @@ class _AdminSignUpState extends State<AddManagersScreen> {
 
     if (message == 'new user') {
       final response = await http.post(
-        Uri.parse('http://192.168.0.102:3000/emp_register'),
+        Uri.parse('http://192.168.1.142:3000/emp_register'),
         body: {
           'empid': username.text,
           'first_name': fname.text,
@@ -266,12 +266,12 @@ class _AdminSignUpState extends State<AddManagersScreen> {
                 const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () async {
-                    if (username.text.isEmpty &&
-                        password1.text.isEmpty &&
-                        password2.text.isEmpty &&
-                        email.text.isEmpty &&
-                        phone.text.isEmpty &&
-                        fname.text.isEmpty &&
+                    if (username.text.isEmpty ||
+                        password1.text.isEmpty ||
+                        password2.text.isEmpty ||
+                        email.text.isEmpty ||
+                        phone.text.isEmpty ||
+                        fname.text.isEmpty ||
                         lname.text.isEmpty) {
                       QuickAlert.show(
                         context: context,

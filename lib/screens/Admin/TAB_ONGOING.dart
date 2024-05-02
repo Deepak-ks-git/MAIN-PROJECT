@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
-import 'package:project3/screens/manager/Details_OnGoing_proc.dart';
+import 'package:project3/screens/Admin/ONGOING_DETAILS.dart';
 
 // Importing ProcurementDetailsPage.dart
 
@@ -15,19 +15,19 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Man_OnGoing_Procurements(),
+      home: TAB_ONGOING(),
     );
   }
 }
 
-class Man_OnGoing_Procurements extends StatefulWidget {
-  const Man_OnGoing_Procurements({Key? key}) : super(key: key);
+class TAB_ONGOING extends StatefulWidget {
+  const TAB_ONGOING({Key? key}) : super(key: key);
 
   @override
-  State<Man_OnGoing_Procurements> createState() => _ViewProcurementsState();
+  State<TAB_ONGOING> createState() => _ViewProcurementsState();
 }
 
-class _ViewProcurementsState extends State<Man_OnGoing_Procurements> {
+class _ViewProcurementsState extends State<TAB_ONGOING> {
   List<Procure> procurements = [];
 
   @override
@@ -84,7 +84,7 @@ class _ViewProcurementsState extends State<Man_OnGoing_Procurements> {
                   context,
                   MaterialPageRoute(
                     builder: (context) =>
-                        Details_OnGoing_proc(procId: procurement.procId),
+                        ONGOING_DETAILS(procId: procurement.procId),
                   ),
                 );
               },

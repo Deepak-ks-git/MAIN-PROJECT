@@ -1,7 +1,11 @@
 import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:open_file/open_file.dart';
+import 'package:path_provider/path_provider.dart';
 
 class Details_New_Procurment extends StatefulWidget {
   final String procId;
@@ -24,7 +28,7 @@ class _ProcurementDetailsPageState extends State<Details_New_Procurment> {
 
   Future<void> fetchProcurements() async {
     final response = await http.get(
-        Uri.parse('http://192.168.0.102:3000/getProc?procId=${widget.procId}'));
+        Uri.parse('http://192.168.1.142:3000/getProc?procId=${widget.procId}'));
     if (response.statusCode == 200) {
       final List<dynamic> data = json.decode(response.body);
       setState(() {
@@ -43,7 +47,7 @@ class _ProcurementDetailsPageState extends State<Details_New_Procurment> {
 
   Future<void> fetchProcurementDetails(String procId) async {
     final response = await http.get(Uri.parse(
-        'http://192.168.0.102:3000/ProcureItemDetails?procId=$procId'));
+        'http://192.168.1.142:3000/ProcureItemDetails?procId=$procId'));
     if (response.statusCode == 200) {
       final List<dynamic> data = json.decode(response.body);
       setState(() {
@@ -82,6 +86,27 @@ class _ProcurementDetailsPageState extends State<Details_New_Procurment> {
       return 'Invalid Date';
     }
   }
+
+Future<void> downloadPDF(String procId) async {
+  // Make API call to download PDF
+  final response = await http.get(Uri.parse('http://192.168.1.142:3000/api/generate-procurement-pdf/$procId'));
+
+  // Check if the response is successful
+  if (response.statusCode == 200) {
+    // Get the directory for storing files
+    final directory = await getExternalStorageDirectory();
+    final filePath = '${directory!.path}/procurement_$procId.pdf';
+
+    // Write the PDF bytes to file
+    File(filePath).writeAsBytesSync(response.bodyBytes);
+
+    // Open the downloaded PDF file
+    OpenFile.open(filePath);
+  } else {
+    // Handle error
+    print('Failed to download PDF: ${response.statusCode}');
+  }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -178,7 +203,10 @@ class _ProcurementDetailsPageState extends State<Details_New_Procurment> {
                   }),
                 ),
               ),
-              ElevatedButton(onPressed: (){}, child: Text('Download pdf'))
+              ElevatedButton(
+                onPressed: () => downloadPDF(widget.procId),
+                child: Text('Download pdf'),
+              )
             ],
           ),
         ],
@@ -192,4 +220,3 @@ void main() {
     home: Details_New_Procurment(procId: 'YourProcurementId'),
   ));
 }
-

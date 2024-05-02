@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:project3/screens/manager/Man_Complete_Procurements.dart';
-import 'package:project3/screens/manager/Man_New_Procurements.dart';
-import 'package:project3/screens/manager/Man_OnGoing_Procurements.dart';
+import 'package:project3/screens/Admin/TAB_NEW.dart';
+import 'package:project3/screens/Admin/TAB_ONGOING.dart';
+import 'package:project3/screens/manager/BlacklistedSuppliers.dart';
 import 'package:project3/screens/manager/Tab_Items.dart';
 
 
-class Man_TAB_Procurements extends StatelessWidget {
-  const Man_TAB_Procurements({super.key});
+class ALL_proc extends StatelessWidget {
+  const ALL_proc({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -54,9 +54,9 @@ class Man_TAB_Procurements extends StatelessWidget {
         ),
         body: const TabBarView(
           children: [
-            Center(child: Man_New_Procurements()),
-            Center(child: Man_OnGoing_Procurements()),
-            Center(child: Man_Complete_Procurements()),
+            Center(child: TAB_NEW()),
+            Center(child: TAB_ONGOING()),
+            Center(child: BlacklistedSuppliers()),
           ],
         ),
       ),

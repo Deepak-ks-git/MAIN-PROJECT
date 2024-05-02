@@ -7,16 +7,16 @@ import 'package:intl/intl.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 
-class Details_OnGoing_proc extends StatefulWidget {
+class Started_Details extends StatefulWidget {
   final String procId;
 
-  Details_OnGoing_proc({required this.procId});
+  Started_Details({required this.procId});
 
   @override
   _ProcurementDetailsPageState createState() => _ProcurementDetailsPageState();
 }
 
-class _ProcurementDetailsPageState extends State<Details_OnGoing_proc> {
+class _ProcurementDetailsPageState extends State<Started_Details> {
   List<Map<String, dynamic>> procurementDetails = [];
   List<Map<String, dynamic>> procureItemDetails = [];
   List<Map<String, dynamic>> purchaseRequestDetails = [];
@@ -396,7 +396,7 @@ class _ProcurementDetailsPageState extends State<Details_OnGoing_proc> {
                     ? 'Request Sent to Supplier. Waiting for response.'
                     : purchaseRequestStatus == 'ACCEPTED'
                         ? 'Request Accepted by the supplier. Waiting for quotation.'
-                        : 'Request rejected by the supplier, CLICK CANCEL BELOW TO CLEAR ',
+                        : 'Order rejected by the supplier',
                 style: TextStyle(
                   fontSize: 12,
                   color: purchaseRequestStatus == 'STARTED'
@@ -425,6 +425,6 @@ class _ProcurementDetailsPageState extends State<Details_OnGoing_proc> {
 
 void main() {
   runApp(MaterialApp(
-    home: Details_OnGoing_proc(procId: 'YourProcurementId'),
+    home: Started_Details(procId: 'YourProcurementId'),
   ));
 }
