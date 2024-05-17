@@ -3,18 +3,18 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
-import 'package:project3/screens/supplier/SendedDetails.dart';
+import 'package:project3/screens/supplier/APPROVEDDetails.dart';
 
-class Sended_quot extends StatefulWidget {
+class Approved_Quot extends StatefulWidget {
   final String username;
 
-  const Sended_quot({Key? key, required this.username}) : super(key: key);
+  const Approved_Quot({Key? key, required this.username}) : super(key: key);
 
   @override
-  State<Sended_quot> createState() => _Accepted_RequestState();
+  State<Approved_Quot> createState() => _Accepted_RequestState();
 }
 
-class _Accepted_RequestState extends State<Sended_quot> {
+class _Accepted_RequestState extends State<Approved_Quot> {
   List<Map<String, dynamic>> requests = [];
 
   @override
@@ -25,7 +25,7 @@ class _Accepted_RequestState extends State<Sended_quot> {
 
   Future<void> fetchNewRequests() async {
     try {
-      final response = await http.get(Uri.parse('http://192.168.1.142:3000/SENDED_of_Quotation?username=${widget.username}'));
+      final response = await http.get(Uri.parse('http://192.168.1.142:3000/APPROVED_of_Quotation?username=${widget.username}'));
       print('Response body: ${response.body}');
 
       if (response.statusCode == 200) {
@@ -87,7 +87,7 @@ class _Accepted_RequestState extends State<Sended_quot> {
                     Navigator.push(
   context,
   MaterialPageRoute(
-    builder: (context) => SendedDetails(
+    builder: (context) => APPROVEDDetails(
       procId: request['procId'],
       purchaseReqId: request['purchaseReqId'], // Pass the purchaseReqId to Edit_Quot_details
     ),

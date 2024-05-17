@@ -2,24 +2,25 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:project3/screens/supplier/Edit_Quot_details.dart';
 
-class UnsendedDetails extends StatefulWidget {
+class Stock_details extends StatefulWidget {
   final String procId;
   final String purchaseReqId;
 
-  const UnsendedDetails({Key? key, required this.procId, required this.purchaseReqId}) : super(key: key);
+  const Stock_details({Key? key, required this.procId, required this.purchaseReqId})
+      : super(key: key);
 
   @override
-  _UnsendedDetailsState createState() => _UnsendedDetailsState();
+  _Stock_detailsState createState() => _Stock_detailsState();
 }
 
-class _UnsendedDetailsState extends State<UnsendedDetails> {
+class _Stock_detailsState extends State<Stock_details> {
   List<dynamic> items = [];
   double discountPercentage = 0.0;
   double discountAmount = 0.0;
   double totalNetPrice = 0.0;
   String quotId = '';
+  String deliveryDate = ''; // Delivery date fetched from orders table
 
   @override
   void initState() {
@@ -37,11 +38,11 @@ class _UnsendedDetailsState extends State<UnsendedDetails> {
         final List<dynamic> data = json.decode(response.body);
         setState(() {
           quotId = data.isNotEmpty ? data[0][0] : '';
-          print('Quotation ID retrieved successfully: $quotId');
         });
 
         if (quotId.isNotEmpty) {
           await fetchQuotationDetails(quotId);
+          await fetchDeliveryDate(quotId);
         }
       } else {
         throw Exception('Failed to load quotation ID. Status Code: ${response.statusCode}');
@@ -74,6 +75,25 @@ class _UnsendedDetailsState extends State<UnsendedDetails> {
     }
   }
 
+  Future<void> fetchDeliveryDate(String quotId) async {
+    try {
+      final response = await http.get(
+        Uri.parse('http://192.168.1.142:3000/getDeliveryDate?quotId=$quotId'), // API endpoint for fetching delivery date
+      );
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> data = json.decode(response.body);
+        setState(() {
+          deliveryDate = data['deliveryDate'] ?? ''; // Extract deliveryDate from API response
+        });
+      } else {
+        throw Exception('Failed to load delivery date. Status Code: ${response.statusCode}');
+      }
+    } catch (error) {
+      print('Error fetching delivery date: $error');
+    }
+  }
+
   void calculateDiscount(double discountAmount, double totalNetPrice) {
     setState(() {
       discountPercentage = (discountAmount / totalNetPrice) * 100;
@@ -97,31 +117,65 @@ class _UnsendedDetailsState extends State<UnsendedDetails> {
     });
   }
 
+  String _formatDeliveryDate(String date) {
+    DateTime parsedDate = DateTime.parse(date);
+    String formattedDay = '${parsedDate.day}${_getOrdinalSuffix(parsedDate.day)}';
+    String formattedMonth = _getMonthName(parsedDate.month);
+    String formattedYear = parsedDate.year.toString();
+    String formattedDate = '$formattedDay $formattedMonth $formattedYear (${parsedDate.day}/${parsedDate.month}/${parsedDate.year})';
+    return formattedDate;
+  }
 
- Future<void> deleteQuotation(String quotId) async {
-    try {
-      final response = await http.post(
-        Uri.parse('http://192.168.1.142:3000/cancel_quotation'),
-        body: {'quotId': quotId},
-      );
+  String _getOrdinalSuffix(int day) {
+    if (day % 100 >= 11 && day % 100 <= 13) {
+      return 'th';
+    }
+    switch (day % 10) {
+      case 1:
+        return 'st';
+      case 2:
+        return 'nd';
+      case 3:
+        return 'rd';
+      default:
+        return 'th';
+    }
+  }
 
-      if (response.statusCode == 200) {
-        final Map<String, dynamic> responseData = json.decode(response.body);
-        print(responseData['message']);
-        // Navigate back to previous screen after deletion
-        Navigator.pop(context);
-      } else {
-        throw Exception('Failed to cancel quotation. Status Code: ${response.statusCode}');
-      }
-    } catch (error) {
-      print('Error cancelling quotation: $error');
+  String _getMonthName(int month) {
+    switch (month) {
+      case 1:
+        return 'January';
+      case 2:
+        return 'February';
+      case 3:
+        return 'March';
+      case 4:
+        return 'April';
+      case 5:
+        return 'May';
+      case 6:
+        return 'June';
+      case 7:
+        return 'July';
+      case 8:
+        return 'August';
+      case 9:
+        return 'September';
+      case 10:
+        return 'October';
+      case 11:
+        return 'November';
+      case 12:
+        return 'December';
+      default:
+        return '';
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
- 
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -137,6 +191,7 @@ class _UnsendedDetailsState extends State<UnsendedDetails> {
               ),
             ),
             SizedBox(height: 10),
+            Divider(thickness: 6),
             Container(
               padding: EdgeInsets.all(10),
               child: Column(
@@ -212,66 +267,41 @@ class _UnsendedDetailsState extends State<UnsendedDetails> {
                         ],
                       ),
                     ),
-                  SizedBox(height: 10),
+                  SizedBox(height: 30),
+                  Divider(thickness: 6),
+                  SizedBox(height: 30),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Delivered Date: ${deliveryDate.isNotEmpty ? _formatDeliveryDate(deliveryDate) : "Date to be selected by supplier"}',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.blue,
+                          ),
+                        ),
+                        SizedBox(height: 20),
+                        
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),
+             SizedBox(height: 30),
+          
           ],
         ),
       ),
-      floatingActionButton: Row(
-  mainAxisAlignment: MainAxisAlignment.end,
-  children: [
-    FloatingActionButton(
-      onPressed: () {
-        // Navigate to Edit_Quot_details when FAB is pressed
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => Edit_Quot_details(
-              procId: widget.procId,
-              purchaseReqId: widget.purchaseReqId,
-            ),
-          ),
-        );
-      },
-      heroTag: 'editButton', // Unique tag for the edit FAB
-      child: Icon(Icons.edit_outlined), // Edit icon
-    ),
-    SizedBox(width: 16), // Spacing between FABs
-  FloatingActionButton(
-            onPressed: () {
-              // Implement delete functionality here
-              showDialog(
-                context: context,
-                builder: (context) => AlertDialog(
-                  title: Text('Delete Quotation?'),
-                  content: Text('Are you sure you want to delete this quotation?'),
-                  actions: [
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pop(context); // Close dialog
-                      },
-                      child: Text('Cancel'),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pop(context); // Close dialog
-                        deleteQuotation(quotId); 
-// Call deleteQuotation method
-                      },
-                      child: Text('Delete'),
-                    ),
-                  ],
-                ),
-              );
-            },
-            heroTag: 'deleteButton', // Unique tag for the delete FAB
-            child: Icon(Icons.delete_outline), // Delete icon
-          ),
-  ],
-),
-
     );
   }
+
+
+
+
 }
+
+

@@ -2,19 +2,20 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:project3/screens/supplier/Edit_Quot_details.dart';
 
-class UnsendedDetails extends StatefulWidget {
+class Quot_details extends StatefulWidget {
   final String procId;
   final String purchaseReqId;
 
-  const UnsendedDetails({Key? key, required this.procId, required this.purchaseReqId}) : super(key: key);
+  const Quot_details(
+      {Key? key, required this.procId, required this.purchaseReqId})
+      : super(key: key);
 
   @override
-  _UnsendedDetailsState createState() => _UnsendedDetailsState();
+  _UnQuot_detailsState createState() => _UnQuot_detailsState();
 }
 
-class _UnsendedDetailsState extends State<UnsendedDetails> {
+class _UnQuot_detailsState extends State<Quot_details> {
   List<dynamic> items = [];
   double discountPercentage = 0.0;
   double discountAmount = 0.0;
@@ -30,7 +31,8 @@ class _UnsendedDetailsState extends State<UnsendedDetails> {
   Future<void> fetchData() async {
     try {
       final response = await http.get(
-        Uri.parse('http://192.168.1.142:3000/get_Quot_id?procId=${widget.procId}'),
+        Uri.parse(
+            'http://192.168.1.142:3000/get_Quot_id?procId=${widget.procId}'),
       );
 
       if (response.statusCode == 200) {
@@ -44,7 +46,8 @@ class _UnsendedDetailsState extends State<UnsendedDetails> {
           await fetchQuotationDetails(quotId);
         }
       } else {
-        throw Exception('Failed to load quotation ID. Status Code: ${response.statusCode}');
+        throw Exception(
+            'Failed to load quotation ID. Status Code: ${response.statusCode}');
       }
     } catch (error) {
       print('Error fetching quotation ID: $error');
@@ -62,12 +65,14 @@ class _UnsendedDetailsState extends State<UnsendedDetails> {
         setState(() {
           items = data;
           if (items.isNotEmpty) {
-            calculateDiscount((items[0][5] as num).toDouble(), (items[0][7] as num).toDouble());
+            calculateDiscount((items[0][5] as num).toDouble(),
+                (items[0][7] as num).toDouble());
             calculateTotalNetPrice();
           }
         });
       } else {
-        throw Exception('Failed to load quotation details. Status Code: ${response.statusCode}');
+        throw Exception(
+            'Failed to load quotation details. Status Code: ${response.statusCode}');
       }
     } catch (error) {
       print('Error fetching quotation details: $error');
@@ -85,7 +90,8 @@ class _UnsendedDetailsState extends State<UnsendedDetails> {
   double calculateTotalNetUnitPrice() {
     double total = 0.0;
     for (var item in items) {
-      total += (item[6] as num).toDouble(); // Index 6 corresponds to the net unit price
+      total += (item[6] as num)
+          .toDouble(); // Index 6 corresponds to the net unit price
     }
     return total;
   }
@@ -97,31 +103,85 @@ class _UnsendedDetailsState extends State<UnsendedDetails> {
     });
   }
 
+Future<void> acceptquotation() async {
+  try {
+    final response = await http.post(
+      Uri.parse('http://192.168.1.142:3000/Approve_Quot'),
+      body: json.encode({'quotId': quotId}),
+      headers: {'Content-Type': 'application/json'},
+    );
 
- Future<void> deleteQuotation(String quotId) async {
-    try {
-      final response = await http.post(
-        Uri.parse('http://192.168.1.142:3000/cancel_quotation'),
-        body: {'quotId': quotId},
-      );
+    if (response.statusCode == 200) {
+      // Quotation status updated successfully
+      print('Quotation status updated successfully');
+      // You can update UI accordingly if needed
+    } else {
+      throw Exception('Failed to update quotation status');
+    }
+  } catch (error) {
+    print('Error updating quotation status: $error');
+  }
+}
 
-      if (response.statusCode == 200) {
-        final Map<String, dynamic> responseData = json.decode(response.body);
-        print(responseData['message']);
-        // Navigate back to previous screen after deletion
-        Navigator.pop(context);
-      } else {
-        throw Exception('Failed to cancel quotation. Status Code: ${response.statusCode}');
+
+Future<void> rejectquotation() async {
+  try {
+    final response = await http.post(
+      Uri.parse('http://192.168.1.142:3000/Reject_Quot'),
+      body: json.encode({'quotId': quotId}),
+      headers: {'Content-Type': 'application/json'},
+    );
+
+    if (response.statusCode == 200) {
+      // Quotation rejection successful
+      print('Quotation rejected successfully');
+      // You can update UI accordingly if needed
+    } else {
+      throw Exception('Failed to reject quotation');
+    }
+  } catch (error) {
+    print('Error rejecting quotation: $error');
+  }
+}
+
+  Future<void> showConfirmationDialog(String action) async {
+    bool? result = await showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Confirmation'),
+          content: Text('Are you sure you want to $action this quotation?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(true); // User confirmed
+              },
+              child: Text('Yes'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(false); // User cancelled
+              },
+              child: Text('No'),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (result != null && result) {
+      if (action == 'accept') {
+        acceptquotation();
+      } else if (action == 'reject') {
+        rejectquotation();
       }
-    } catch (error) {
-      print('Error cancelling quotation: $error');
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
- 
+    
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -137,6 +197,7 @@ class _UnsendedDetailsState extends State<UnsendedDetails> {
               ),
             ),
             SizedBox(height: 10),
+            Divider(thickness: 6),
             Container(
               padding: EdgeInsets.all(10),
               child: Column(
@@ -151,25 +212,33 @@ class _UnsendedDetailsState extends State<UnsendedDetails> {
                         dataRowHeight: 30, // Set the height of each DataRow
                         columns: [
                           DataColumn(
-                            label: Text('Item Name', style: TextStyle(fontSize: 14)),
+                            label: Text('Item Name',
+                                style: TextStyle(fontSize: 14)),
                           ),
                           DataColumn(
-                            label: Text('Quantity', style: TextStyle(fontSize: 14)),
+                            label: Text('Quantity',
+                                style: TextStyle(fontSize: 14)),
                           ),
                           DataColumn(
-                            label: Text('Unit Price', style: TextStyle(fontSize: 14)),
+                            label: Text('Unit Price',
+                                style: TextStyle(fontSize: 14)),
                           ),
                           DataColumn(
-                            label: Text('Net Unit Price', style: TextStyle(fontSize: 14)),
+                            label: Text('Net Unit Price',
+                                style: TextStyle(fontSize: 14)),
                           ),
                         ],
                         rows: items.map<DataRow>((item) {
                           return DataRow(
                             cells: [
-                              DataCell(Text('${item[1]}', style: TextStyle(fontSize: 14))),
-                              DataCell(Text('${item[2]}', style: TextStyle(fontSize: 14))),
-                              DataCell(Text('${item[3]}', style: TextStyle(fontSize: 14))),
-                              DataCell(Text('${item[6]}', style: TextStyle(fontSize: 14))),
+                              DataCell(Text('${item[1]}',
+                                  style: TextStyle(fontSize: 14))),
+                              DataCell(Text('${item[2]}',
+                                  style: TextStyle(fontSize: 14))),
+                              DataCell(Text('${item[3]}',
+                                  style: TextStyle(fontSize: 14))),
+                              DataCell(Text('${item[6]}',
+                                  style: TextStyle(fontSize: 14))),
                             ],
                           );
                         }).toList(),
@@ -207,71 +276,54 @@ class _UnsendedDetailsState extends State<UnsendedDetails> {
                           SizedBox(height: 10),
                           Text(
                             'Total Net Price: ${totalNetPrice.toStringAsFixed(2)}',
-                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.w500),
                           ),
                         ],
                       ),
                     ),
-                  SizedBox(height: 10),
+                  SizedBox(height: 30),
+                  Divider(thickness: 6),
+                  SizedBox(height: 30),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Column(
+                        children: [
+                          IconButton(
+                            onPressed: () {
+                              showConfirmationDialog('accept');
+                            },
+                            icon: Image.asset('assets/accept.gif'),
+                            tooltip: 'Accept',
+                          ),
+                          Text('Accept quotation'),
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          IconButton(
+                            onPressed: () {
+                              showConfirmationDialog('reject');
+                            },
+                            icon: Image.asset(
+                              'assets/reject.png',
+                              height: 65,
+                              width: 65,
+                            ),
+                            tooltip: 'Reject',
+                          ),
+                          Text('Reject quotation'),
+                        ],
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ),
           ],
         ),
       ),
-      floatingActionButton: Row(
-  mainAxisAlignment: MainAxisAlignment.end,
-  children: [
-    FloatingActionButton(
-      onPressed: () {
-        // Navigate to Edit_Quot_details when FAB is pressed
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => Edit_Quot_details(
-              procId: widget.procId,
-              purchaseReqId: widget.purchaseReqId,
-            ),
-          ),
-        );
-      },
-      heroTag: 'editButton', // Unique tag for the edit FAB
-      child: Icon(Icons.edit_outlined), // Edit icon
-    ),
-    SizedBox(width: 16), // Spacing between FABs
-  FloatingActionButton(
-            onPressed: () {
-              // Implement delete functionality here
-              showDialog(
-                context: context,
-                builder: (context) => AlertDialog(
-                  title: Text('Delete Quotation?'),
-                  content: Text('Are you sure you want to delete this quotation?'),
-                  actions: [
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pop(context); // Close dialog
-                      },
-                      child: Text('Cancel'),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pop(context); // Close dialog
-                        deleteQuotation(quotId); 
-// Call deleteQuotation method
-                      },
-                      child: Text('Delete'),
-                    ),
-                  ],
-                ),
-              );
-            },
-            heroTag: 'deleteButton', // Unique tag for the delete FAB
-            child: Icon(Icons.delete_outline), // Delete icon
-          ),
-  ],
-),
-
     );
   }
 }

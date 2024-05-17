@@ -38,7 +38,6 @@ class _AddItemScreenState extends State<AddItemScreen> {
       status = 'Internal Server Error';
     }
 
-    // Clear text fields after signup
     pname.clear();
     color.clear();
     dimension.clear();
@@ -103,8 +102,8 @@ class _AddItemScreenState extends State<AddItemScreen> {
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () async {
-                  if (dimension.text.isEmpty &&
-                      color.text.isEmpty &&
+                  if (dimension.text.isEmpty ||
+                      color.text.isEmpty ||
                       pname.text.isEmpty) {
                     QuickAlert.show(
                       context: context,

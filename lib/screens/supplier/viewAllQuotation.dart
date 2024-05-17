@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project3/screens/manager/Tab_Items.dart';
-import 'package:project3/screens/supplier/Rejected_Request.dart';
+import 'package:project3/screens/supplier/Approved_Quot.dart';
 import 'package:project3/screens/supplier/Sended_quot.dart';
 import 'package:project3/screens/supplier/Unsended_quot.dart';
 
@@ -48,9 +48,9 @@ class viewAllQuotation extends StatelessWidget {
                     labelColor: Colors.white,
                     unselectedLabelColor: Colors.black54,
                     tabs: [
-                      TabItem(title: 'NOT SENDED', count: 0,),
-                      TabItem(title: 'SENDED', count: 0),
-                      TabItem(title: 'CANCELLED', count: 0),
+                      TabItem(title: 'NOT SEND', count: 0,),
+                      TabItem(title: 'SEND', count: 0),
+                      TabItem(title: 'APPROVED', count: 0),
                     ],
                   ),
                 ),
@@ -62,7 +62,7 @@ class viewAllQuotation extends StatelessWidget {
           children: [
             Center(child: Unsended_quot(username: username)),
             Center(child: Sended_quot(username: username)),
-            Center(child: Rejected_Request(username: username)),
+            Center(child: Approved_Quot(username: username)),
           ],
         ),
       ),

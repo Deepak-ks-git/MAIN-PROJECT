@@ -1,10 +1,10 @@
+
 import 'package:flutter/material.dart';
-import 'package:project3/screens/Admin/ALL_proc.dart';
-import 'package:project3/screens/Admin/CreateProcurement.dart';
-import 'package:project3/screens/Admin/add_managers_screen.dart';
+import 'package:project3/screens/manager/AddStock.dart';
+import 'package:project3/screens/manager/View_Stock.dart';
 
 
-class NavHomePage extends StatelessWidget {
+class Stock extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,41 +16,27 @@ class NavHomePage extends StatelessWidget {
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(), // Disable GridView scrolling
               children: [
-                FeatureTile(
-                  icon: Icons.people,
-                  text: 'Add Managers',
+             
+   
+                  FeatureTile(
+                  icon: Icons.add_task,
+                  text: 'Add Stock',
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => AddManagersScreen()),
-                    );
+                    Navigator.push(context, MaterialPageRoute(builder:(context) => AddStock()));
                     // Handle onPressed event
                   },
                 ),
-                FeatureTile(
-                  icon: Icons.shopping_cart,
-                  text: 'Create Procurement',
+                   FeatureTile(
+                  icon: Icons.filter_list,
+                  text: 'View Stock',
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => CreateProcurement()),
-                    );
+                    Navigator.push(context, MaterialPageRoute(builder:(context) => View_Stock()));
                     // Handle onPressed event
                   },
                 ),
-                FeatureTile(
-                  icon: Icons.shopping_cart,
-                  text: 'Procurements',
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => ALL_proc()),
-                    );
-                    // Handle onPressed event
-                  },
-                ),
+               
                 
-                // Add more FeatureTiles as needed
+              
               ],
             ),
           ],

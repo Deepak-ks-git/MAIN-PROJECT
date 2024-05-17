@@ -2,19 +2,18 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:project3/screens/supplier/Edit_Quot_details.dart';
 
-class UnsendedDetails extends StatefulWidget {
+class SendedDetails extends StatefulWidget {
   final String procId;
   final String purchaseReqId;
 
-  const UnsendedDetails({Key? key, required this.procId, required this.purchaseReqId}) : super(key: key);
+  const SendedDetails({Key? key, required this.procId, required this.purchaseReqId}) : super(key: key);
 
   @override
-  _UnsendedDetailsState createState() => _UnsendedDetailsState();
+  _SendedDetailsState createState() => _SendedDetailsState();
 }
 
-class _UnsendedDetailsState extends State<UnsendedDetails> {
+class _SendedDetailsState extends State<SendedDetails> {
   List<dynamic> items = [];
   double discountPercentage = 0.0;
   double discountAmount = 0.0;
@@ -37,7 +36,6 @@ class _UnsendedDetailsState extends State<UnsendedDetails> {
         final List<dynamic> data = json.decode(response.body);
         setState(() {
           quotId = data.isNotEmpty ? data[0][0] : '';
-          print('Quotation ID retrieved successfully: $quotId');
         });
 
         if (quotId.isNotEmpty) {
@@ -97,32 +95,11 @@ class _UnsendedDetailsState extends State<UnsendedDetails> {
     });
   }
 
-
- Future<void> deleteQuotation(String quotId) async {
-    try {
-      final response = await http.post(
-        Uri.parse('http://192.168.1.142:3000/cancel_quotation'),
-        body: {'quotId': quotId},
-      );
-
-      if (response.statusCode == 200) {
-        final Map<String, dynamic> responseData = json.decode(response.body);
-        print(responseData['message']);
-        // Navigate back to previous screen after deletion
-        Navigator.pop(context);
-      } else {
-        throw Exception('Failed to cancel quotation. Status Code: ${response.statusCode}');
-      }
-    } catch (error) {
-      print('Error cancelling quotation: $error');
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
- 
       body: SingleChildScrollView(
+        padding: EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -136,32 +113,24 @@ class _UnsendedDetailsState extends State<UnsendedDetails> {
                 ),
               ),
             ),
-            SizedBox(height: 10),
+            Divider(thickness: 7),
             Container(
               padding: EdgeInsets.all(10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(
-                    height: 200, // Set a fixed height for the DataTable
+                    height: 200,
                     child: SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: DataTable(
                         columnSpacing: 20,
-                        dataRowHeight: 30, // Set the height of each DataRow
+                        dataRowHeight: 30,
                         columns: [
-                          DataColumn(
-                            label: Text('Item Name', style: TextStyle(fontSize: 14)),
-                          ),
-                          DataColumn(
-                            label: Text('Quantity', style: TextStyle(fontSize: 14)),
-                          ),
-                          DataColumn(
-                            label: Text('Unit Price', style: TextStyle(fontSize: 14)),
-                          ),
-                          DataColumn(
-                            label: Text('Net Unit Price', style: TextStyle(fontSize: 14)),
-                          ),
+                          DataColumn(label: Text('Item Name', style: TextStyle(fontSize: 14))),
+                          DataColumn(label: Text('Quantity', style: TextStyle(fontSize: 14))),
+                          DataColumn(label: Text('Unit Price', style: TextStyle(fontSize: 14))),
+                          DataColumn(label: Text('Net Unit Price', style: TextStyle(fontSize: 14))),
                         ],
                         rows: items.map<DataRow>((item) {
                           return DataRow(
@@ -212,66 +181,15 @@ class _UnsendedDetailsState extends State<UnsendedDetails> {
                         ],
                       ),
                     ),
-                  SizedBox(height: 10),
+                  SizedBox(height: 20),
+                  Divider(thickness: 7),
+                  SizedBox(height: 40),
                 ],
               ),
             ),
           ],
         ),
       ),
-      floatingActionButton: Row(
-  mainAxisAlignment: MainAxisAlignment.end,
-  children: [
-    FloatingActionButton(
-      onPressed: () {
-        // Navigate to Edit_Quot_details when FAB is pressed
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => Edit_Quot_details(
-              procId: widget.procId,
-              purchaseReqId: widget.purchaseReqId,
-            ),
-          ),
-        );
-      },
-      heroTag: 'editButton', // Unique tag for the edit FAB
-      child: Icon(Icons.edit_outlined), // Edit icon
-    ),
-    SizedBox(width: 16), // Spacing between FABs
-  FloatingActionButton(
-            onPressed: () {
-              // Implement delete functionality here
-              showDialog(
-                context: context,
-                builder: (context) => AlertDialog(
-                  title: Text('Delete Quotation?'),
-                  content: Text('Are you sure you want to delete this quotation?'),
-                  actions: [
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pop(context); // Close dialog
-                      },
-                      child: Text('Cancel'),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pop(context); // Close dialog
-                        deleteQuotation(quotId); 
-// Call deleteQuotation method
-                      },
-                      child: Text('Delete'),
-                    ),
-                  ],
-                ),
-              );
-            },
-            heroTag: 'deleteButton', // Unique tag for the delete FAB
-            child: Icon(Icons.delete_outline), // Delete icon
-          ),
-  ],
-),
-
     );
   }
 }

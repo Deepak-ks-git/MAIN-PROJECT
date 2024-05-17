@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:project3/screens/manager/Man_Supplier.dart';
 import 'package:project3/screens/manager/Man_TAB_Procurements.dart';
+import 'package:project3/screens/manager/OrdersHome.dart';
+import 'package:project3/screens/manager/Quotations.dart';
+import 'package:project3/screens/manager/Stock.dart';
 
 
 class ManHomeNav extends StatelessWidget {
@@ -36,6 +39,31 @@ class ManHomeNav extends StatelessWidget {
                   text: 'Suppliers',
                   onPressed: () {
                     Navigator.push(context, MaterialPageRoute(builder:(context) => Man_Supplier()));
+                    // Handle onPressed event
+                  },
+                ),
+                  FeatureTile(
+                  icon: Icons.list_outlined,
+                  text: 'Quotations',
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder:(context) => Quotations()));
+                    // Handle onPressed event
+                  },
+                ),
+                 FeatureTile(
+                  icon: Icons.shopping_bag,
+                  text: 'Orders',
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder:(context) => OrdersHome()));
+                    // Handle onPressed event
+                  },
+                ),
+              
+               FeatureTile(
+                  icon: Icons.stacked_bar_chart,
+                  text: 'Stock',
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder:(context) => Stock()));
                     // Handle onPressed event
                   },
                 ),

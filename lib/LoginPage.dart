@@ -2,8 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:project3/AdminHome.dart';
-import 'package:project3/ManagerHome.dart';
 import 'package:project3/SignupPage.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
@@ -49,21 +47,21 @@ class _EmpLoginState extends State<LoginPage> {
       }
       if (message2 == 'valid') {
         final roleResponse = await http.get(
-          Uri.parse('http://192.168.1.142:3000/role?user=$user'),
+          Uri.parse('http://192.168.1.142:3000/roless?user=$user'),
         );
         if (roleResponse.statusCode == 200) {
           final Map<String, dynamic> roleData = json.decode(roleResponse.body);
           role = roleData['role'];
           if (role == 'admin') {
-            Navigator.pushReplacement(
+            Navigator.pushNamedAndRemoveUntil(
               context,
-              MaterialPageRoute(builder: (context) => AdminHome()),
+              '/admin_home',
+              (route) => false, // Remove all routes
             );
+            // Navigate to admin home
           } else {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => ManagerHome()),
-            );
+            Navigator.pushReplacementNamed(
+                context, '/manager_home'); // Navigate to manager home
           }
         }
       } else {
@@ -112,13 +110,15 @@ class _EmpLoginState extends State<LoginPage> {
                       ),
                       filled: true,
                       prefixIcon: const Icon(Icons.person),
-                      contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 15), // Adjust padding
+                      contentPadding: EdgeInsets.symmetric(
+                          vertical: 5, horizontal: 15), // Adjust padding
                     ),
                     style: TextStyle(
                       height: 0.5, // Adjust height
                     ),
                   ),
-                  const SizedBox(height: 5), // Reduced height between input boxes
+                  const SizedBox(
+                      height: 5), // Reduced height between input boxes
                   TextField(
                     controller: password,
                     decoration: InputDecoration(
@@ -129,14 +129,17 @@ class _EmpLoginState extends State<LoginPage> {
                       ),
                       filled: true,
                       prefixIcon: const Icon(Icons.password),
-                      contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 15), // Adjust padding
+                      contentPadding: EdgeInsets.symmetric(
+                          vertical: 5, horizontal: 15), // Adjust padding
                     ),
                     obscureText: true,
                     style: TextStyle(
                       height: 0.5, // Adjust height
                     ),
                   ),
-                  const SizedBox(height: 10), // Reduced height between input boxes and button
+                  const SizedBox(
+                      height:
+                          10), // Reduced height between input boxes and button
                   ElevatedButton(
                     onPressed: () async {
                       if (username.text.isEmpty && password.text.isEmpty) {
@@ -153,7 +156,8 @@ class _EmpLoginState extends State<LoginPage> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(18),
                       ),
-                      padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 50), // Adjust padding
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 5, horizontal: 50), // Adjust padding
                       backgroundColor: Color.fromARGB(255, 4, 18, 67),
                     ),
                     child: const Text(

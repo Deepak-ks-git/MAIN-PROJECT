@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:project3/screens/supplier/DeliveryPage.dart';
+import 'package:project3/screens/supplier/OrdersPage.dart';
 import 'package:project3/screens/supplier/QuotationPage.dart';
 import 'package:project3/screens/supplier/Request_Tab.dart';
 
@@ -22,14 +24,16 @@ class SupplierNavHome extends StatelessWidget {
                   icon: Icons.shopping_cart,
                   text: 'View Orders',
                   onPressed: () {
-                    // Handle onPressed event
+                                        Navigator.push(context, MaterialPageRoute(builder:(context) => OrdersPage()));
+
                   },
                 ),
                 FeatureTile(
-                  icon: Icons.account_circle,
-                  text: 'Profile',
+                  icon: Icons.delivery_dining,
+                  text: 'Delivery',
                   onPressed: () {
-                    // Handle onPressed event
+                                                            Navigator.push(context, MaterialPageRoute(builder:(context) => DeliveryPage()));
+
                   },
                 ),
                 FeatureTile(
@@ -50,6 +54,7 @@ class SupplierNavHome extends StatelessWidget {
                   },
                   
                 ),
+                
               ],
             ),
           ],

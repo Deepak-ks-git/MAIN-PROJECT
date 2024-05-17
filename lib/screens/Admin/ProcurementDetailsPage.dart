@@ -1,8 +1,8 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
-import 'package:project3/screens/Admin/CreateProcurement.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 
@@ -239,7 +239,7 @@ class _ProcurementDetailsPageState extends State<ProcurementDetailsPage> {
               ),
               child: Text(
                 'Start Procurement',
-                style: TextStyle(fontSize: 16),
+                style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold,color: Colors.white),
               ),
             ),
           ),

@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:project3/splash.dart';
+import 'package:project3/HomeScreen.dart';
+import 'package:project3/ManagerHome.dart';
+import 'package:project3/Splash.dart';
+import 'package:project3/screens/Admin/Admin_Homepage.dart';
+import 'package:project3/screens/Admin/settings_page.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
   @override
-  State<MyApp> createState() => _MyAppState();
+  _MyAppState createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
@@ -17,7 +21,18 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home:Splash(),
+      initialRoute: '/splash',
+      routes: {
+        '/splash': (context) => Splash(),
+        '/home': (context) => HomeScreen(),
+        '/settings': (context) => SettingsPage(),
+        '/admin_home': (context) => NavHomePage(),
+        '/manager_home': (context) => ManagerHome(),
+
+
+
+        // Add more routes as needed
+      },
     );
   }
 }
