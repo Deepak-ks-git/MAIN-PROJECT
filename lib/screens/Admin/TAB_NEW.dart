@@ -38,7 +38,7 @@ class _ViewProcurementsState extends State<TAB_NEW> {
 
   Future<void> fetchProcurements() async {
     try {
-      final response = await http.get(Uri.parse('http://192.168.1.142:3000/ADMIN_new_proc'));
+      final response = await http.get(Uri.parse('http://192.168.1.143:3000/ADMIN_new_proc'));
       if (response.statusCode == 200) {
         final List<dynamic> data = json.decode(response.body);
         setState(() {

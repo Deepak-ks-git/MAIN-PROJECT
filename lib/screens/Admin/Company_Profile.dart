@@ -37,8 +37,8 @@ class _CompanyProfileState extends State<CompanyProfile> {
   }
 
   Future<void> fetchData() async {
-    final logoUrl = 'http://192.168.1.142:3000/LOGO_COMPANY';
-    final detailsUrl = 'http://192.168.1.142:3000/companyDetails'; // Update with your API URL
+    final logoUrl = 'http://192.168.1.143:3000/LOGO_COMPANY';
+    final detailsUrl = 'http://192.168.1.143:3000/companyDetails'; // Update with your API URL
 
     setState(() {
       _isLoading = true;
@@ -125,7 +125,7 @@ class _CompanyProfileState extends State<CompanyProfile> {
       return;
     }
 
-    final serverUrl = 'http://192.168.1.142:3000/uploadlogo';
+    final serverUrl = 'http://192.168.1.143:3000/uploadlogo';
     final companyId = _companyDetails[0]; // Assuming company ID is the first detail
 
     try {
@@ -163,7 +163,7 @@ class _CompanyProfileState extends State<CompanyProfile> {
       return;
     }
 
-    final updateUrl = 'http://192.168.1.142:3000/updateCompanyDetails'; // Update with your API URL
+    final updateUrl = 'http://192.168.1.143:3000/updateCompanyDetails'; // Update with your API URL
 
     try {
       final response = await http.post(Uri.parse(updateUrl), body: {
@@ -212,7 +212,7 @@ class _CompanyProfileState extends State<CompanyProfile> {
 
   @override
   Widget build(BuildContext context) {
-    Color myColor = Color(0xFF1C2951);
+    Color myColor = Color(0xFF1E2736);
 
     return Scaffold(
       appBar: AppBar(

@@ -2,7 +2,19 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:project3/screens/manager/AddStock.dart';
+import 'package:project3/screens/manager/AppDrawerMan.dart';
+import 'package:project3/screens/manager/Dash_MANAGER.dart';
+import 'package:project3/screens/manager/ManHomeNav.dart';
+import 'package:project3/screens/manager/Man_Supplier.dart';
+import 'package:project3/screens/manager/Man_TAB_Procurements.dart';
+import 'package:project3/screens/manager/New_Orders.dart';
 import 'package:project3/screens/manager/PLACE_ORDER.dart';
+import 'package:project3/screens/manager/Quotations.dart';
+import 'package:project3/screens/manager/ReportPage.dart';
+import 'package:project3/screens/manager/SettingsPage.dart';
+import 'package:project3/screens/manager/Stock.dart';
+import 'package:project3/screens/manager/VerifyOrders.dart';
 
 
 class PlaceOrders extends StatefulWidget {
@@ -24,7 +36,7 @@ class _PlaceOrdersState extends State<PlaceOrders> {
   Future<void> fetchPlaceOrders() async {
     try {
       final response =
-          await http.get(Uri.parse('http://192.168.1.142:3000/approved_quotation'));
+          await http.get(Uri.parse('http://192.168.1.143:3000/approved_quotation'));
 
       if (response.statusCode == 200) {
         // If the API call is successful, parse the JSON response
@@ -43,9 +55,13 @@ class _PlaceOrdersState extends State<PlaceOrders> {
 
   @override
   Widget build(BuildContext context) {
+    Color myColor = Color(0xFF1E2736);
+
     return Scaffold(
-      appBar: AppBar(
-        title: Text('PlaceOrders'),
+        appBar: AppBar(
+        title: Text('Place Orders', style: TextStyle(color: Colors.white)),
+        backgroundColor: myColor,
+        iconTheme: IconThemeData(color: Colors.white), // Set the icon theme to white
       ),
       body: Center(
         child: PlaceOrders.isEmpty
@@ -105,6 +121,74 @@ class _PlaceOrdersState extends State<PlaceOrders> {
                 },
               ),
       ),
+
+           drawer: AppDrawerMan(
+        drawerColor: myColor,
+        onHomeTap: () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => Dash_MANAGER()),
+          );
+        },
+        onSettingsTap: () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => SettingsPage()),
+          );
+        },
+        onReportTap: () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => ReportPage()),
+          );; // Close drawer if already on Report page
+        },
+        onPlaceOrdersTap: () {
+          Navigator.pop(context); // Close drawer if already on Report page
+        },
+         onStockTap: () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => Stock()),
+          );
+        },
+          onSupplierstTap: () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => Man_Supplier()),
+          );
+        },
+        onAddStocktTap: () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => AddStock()),
+          );
+        },
+         onOrdersTap: () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => New_Orders()),
+          );
+        },
+         onVerifyOrdersTap: () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => VerifyOrders()),
+          );
+        },
+          onQuotationsTap: () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => Quotations()),
+          );
+        },
+         onProcurementTap:() {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => Man_TAB_Procurements()),
+          );
+        },
+      ),
+    
     );
   }
 }

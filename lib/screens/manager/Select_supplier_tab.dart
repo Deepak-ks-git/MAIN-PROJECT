@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:project3/screens/manager/DetailedSupplierInfo.dart';
@@ -31,7 +32,7 @@ class _SelectSupplierTabState extends State<SelectSupplierTab> {
 
   Future<List<List<String>>> fetchSelectSupplierTab() async {
     final response =
-        await http.get(Uri.parse('http://192.168.1.142:3000/active_suppliers'));
+        await http.get(Uri.parse('http://192.168.1.143:3000/active_suppliers'));
 
     if (response.statusCode == 200) {
       List<dynamic> data = jsonDecode(response.body);
@@ -57,7 +58,7 @@ class _SelectSupplierTabState extends State<SelectSupplierTab> {
               decoration: BoxDecoration(
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
+                    color: Colors.grey.withOpacity(0.2),
                     spreadRadius: 2,
                     blurRadius: 4,
                     offset: Offset(0, 2), // changes position of shadow
@@ -90,6 +91,8 @@ class _SelectSupplierTabState extends State<SelectSupplierTab> {
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(12.0),
+                                                  border: Border.all(color: Colors.grey),
+
                       ),
                       child: Row(
                         children: [
@@ -110,7 +113,7 @@ class _SelectSupplierTabState extends State<SelectSupplierTab> {
                             ),
                           ),
                           IconButton(
-                            icon: Icon(Icons.info),
+                            icon: Icon(Icons.ads_click),
                             onPressed: () {
                               Navigator.push(
                                 context,
@@ -173,7 +176,7 @@ class _SelectSupplierTabState extends State<SelectSupplierTab> {
                 // Call the API endpoint
                 try {
                   final response = await http.post(
-                    Uri.parse('http://192.168.1.142:3000/Select_supplier'),
+                    Uri.parse('http://192.168.1.143:3000/Select_supplier'),
                     body: jsonEncode({
                       'procId': widget.procId,
                       'user_id': 'man10', // Replace with your actual user id
@@ -197,6 +200,7 @@ class _SelectSupplierTabState extends State<SelectSupplierTab> {
                 Navigator.pop(context);
               },
             ),
+            SizedBox(height: 100,)
           ],
         );
       },
@@ -211,7 +215,7 @@ class _SelectSupplierTabState extends State<SelectSupplierTab> {
     }
 
     final response = await http.get(
-      Uri.parse('http://192.168.1.142:3000/purchase_request_status?procId=$procId'),
+      Uri.parse('http://192.168.1.143:3000/purchase_request_status?procId=$procId'),
     );
     if (response.statusCode == 200) {
       final jsonResponse = jsonDecode(response.body);

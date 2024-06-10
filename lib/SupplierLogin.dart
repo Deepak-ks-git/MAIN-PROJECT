@@ -1,35 +1,33 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-
+import 'package:http/http.dart' as http;
 import 'package:project3/SignupPage.dart';
-import 'package:project3/SupplierHome.dart';
+import 'package:project3/screens/supplier/SupplierNavHome.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
-import 'package:http/http.dart' as http;
 
 class SupplierLogin extends StatefulWidget {
-  const SupplierLogin({Key? key});
+  const SupplierLogin({Key? key}) : super(key: key);
 
   @override
-  State<SupplierLogin> createState() => _EmpLoginState();
+  State<SupplierLogin> createState() => _SupplierLoginState();
 }
 
-class _EmpLoginState extends State<SupplierLogin> {
+class _SupplierLoginState extends State<SupplierLogin> {
   String? message1;
   String? message2;
-  String? role;
 
   final TextEditingController username = TextEditingController();
   final TextEditingController password = TextEditingController();
+
   Future<void> UserLogin() async {
     final String user = username.text;
     final response = await http.get(
-      Uri.parse('http://192.168.1.142:3000/s_username?user=$user'),
+      Uri.parse('http://192.168.1.143:3000/s_username?user=$user'),
     );
     if (response.statusCode == 200) {
       final Map<String, dynamic> data = json.decode(response.body);
-      // Assign the message to the class variable
       message1 = data['message'];
     }
     if (message1 == 'invalid user') {
@@ -39,18 +37,17 @@ class _EmpLoginState extends State<SupplierLogin> {
     } else {
       final String pass = password.text;
       final response = await http.get(
-        Uri.parse('http://192.168.1.142:3000/s_password?pass=$pass'),
+        Uri.parse('http://192.168.1.143:3000/s_password?pass=$pass&user=$user'),
       );
       if (response.statusCode == 200) {
         final Map<String, dynamic> data = json.decode(response.body);
-        // Assign the message to the class variable
         message2 = data['message'];
       }
       if (message2 == 'valid') {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => SupplierHome(username: username.text),
+            builder: (context) => SupplierNavHome(username: username.text),
           ),
         );
       } else {
@@ -75,16 +72,19 @@ class _EmpLoginState extends State<SupplierLogin> {
         body: Container(
           margin: const EdgeInsets.all(24),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Column(
                 children: [
                   Text(
                     "Welcome Supplier",
-                    style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                   ),
                   Text("Enter your credential to login"),
                 ],
+              ),
+              SizedBox(
+                height: 70,
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -93,36 +93,38 @@ class _EmpLoginState extends State<SupplierLogin> {
                     controller: username,
                     decoration: InputDecoration(
                       hintText: "Username or Email",
+                      hintStyle: TextStyle(fontSize: 16),
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(18),
-                        borderSide: BorderSide.none,
+                        borderRadius: BorderRadius.circular(10),
                       ),
-                      fillColor:
-                          Color.fromARGB(255, 52, 86, 208).withOpacity(0.1),
+                      fillColor: Colors.white,
                       filled: true,
                       prefixIcon: const Icon(Icons.person),
+                      contentPadding: EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 20), // Adjust padding
                     ),
                   ),
                   const SizedBox(height: 10),
                   TextField(
                     controller: password,
                     decoration: InputDecoration(
-                      hintText: "Password",
+                      hintText: "Password,",
+                      hintStyle: TextStyle(fontSize: 16),
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(18),
-                        borderSide: BorderSide.none,
+                        borderRadius: BorderRadius.circular(10),
                       ),
-                      fillColor:
-                          Color.fromARGB(255, 52, 86, 208).withOpacity(0.1),
+                      fillColor: Colors.white,
                       filled: true,
                       prefixIcon: const Icon(Icons.password),
+                      contentPadding: EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 20), // Adjust padding
                     ),
                     obscureText: true,
                   ),
                   const SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: () async {
-                      if (username.text.isEmpty && password.text.isEmpty) {
+                      if (username.text.isEmpty || password.text.isEmpty) {
                         QuickAlert.show(
                           context: context,
                           type: QuickAlertType.warning,
@@ -133,40 +135,39 @@ class _EmpLoginState extends State<SupplierLogin> {
                       }
                     },
                     style: ElevatedButton.styleFrom(
-                      shape: const StadiumBorder(),
-                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      padding:  EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 20),
+                      minimumSize: const Size(double.infinity, 0),
                       backgroundColor: Color.fromARGB(255, 4, 18, 67),
+                      
                     ),
                     child: const Text(
                       "Login",
-                      style: TextStyle(fontSize: 20, color: Colors.white),
+                      style: TextStyle(fontSize: 16, color: Colors.white),
                     ),
-                  )
-                ],
-              ),
-              /* TextButton(
-                onPressed: () {},
-                child: const Text(
-                  "Forgot password?",
-                  //style: TextStyle(color: Colors.purple),
-                ),
-              ),*/
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text("Dont have an account? "),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => SignupPage()));
-                    },
-                    child: const Text(
-                      "Sign Up",
-                      style: TextStyle(color: Colors.blue),
-                    ),
-                  )
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text("Don't have an account? "),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SignupPage()),
+                          );
+                        },
+                        child: const Text(
+                          "Sign Up",
+                          style: TextStyle(color: Colors.blue),
+                        ),
+                      )
+                    ],
+                  ),
                 ],
               ),
             ],

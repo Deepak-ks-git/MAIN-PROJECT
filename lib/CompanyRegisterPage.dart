@@ -34,7 +34,7 @@ class _CompanyRegisterPageState extends State<CompanyRegisterPage> {
 
     // Check if username already exists
     final usernameResponse = await http.get(
-      Uri.parse('http://192.168.1.142:3000/cid?cid=$cid'),
+      Uri.parse('http://192.168.1.143:3000/cid?cid=$cid'),
     );
     if (usernameResponse.statusCode == 200) {
       final Map<String, dynamic> userData = json.decode(usernameResponse.body);
@@ -50,7 +50,7 @@ class _CompanyRegisterPageState extends State<CompanyRegisterPage> {
 
     // Check if email already exists
     final emailResponse = await http.get(
-      Uri.parse('http://192.168.1.142:3000/c_email?email=$email'),
+      Uri.parse('http://192.168.1.143:3000/c_email?email=$email'),
     );
     if (emailResponse.statusCode == 200) {
       final Map<String, dynamic> emailData = json.decode(emailResponse.body);
@@ -66,7 +66,7 @@ class _CompanyRegisterPageState extends State<CompanyRegisterPage> {
 
     // Check if phone number already exists
     final phoneResponse = await http.get(
-      Uri.parse('http://192.168.1.142:3000/c_name?cname=$cname'),
+      Uri.parse('http://192.168.1.143:3000/c_name?cname=$cname'),
     );
     if (phoneResponse.statusCode == 200) {
       final Map<String, dynamic> phoneData = json.decode(phoneResponse.body);
@@ -84,7 +84,7 @@ class _CompanyRegisterPageState extends State<CompanyRegisterPage> {
 
     if (message == 'new company') {
       final response = await http.post(
-        Uri.parse('http://192.168.1.142:3000/company_register'),
+        Uri.parse('http://192.168.1.143:3000/company_register'),
         body: {
           'id': id.text,
           'name': name.text,
@@ -113,7 +113,7 @@ class _CompanyRegisterPageState extends State<CompanyRegisterPage> {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => AdminSignUp(),
+              builder: (context) => AdminSignUp(companyId: id.text),
             ),
           );
         } else {
@@ -153,7 +153,7 @@ class _CompanyRegisterPageState extends State<CompanyRegisterPage> {
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 40),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -195,7 +195,7 @@ class _CompanyRegisterPageState extends State<CompanyRegisterPage> {
                       controller: id,
                     ),
                   ),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: 8),
                   Expanded(
                     child: CustomTextField(
                       hintText: "Name",
@@ -215,7 +215,7 @@ class _CompanyRegisterPageState extends State<CompanyRegisterPage> {
                       controller: add1,
                     ),
                   ),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: 8),
                   Expanded(
                     child: CustomTextField(
                       hintText: "Address Line 2",
@@ -235,7 +235,7 @@ class _CompanyRegisterPageState extends State<CompanyRegisterPage> {
                       controller: add3,
                     ),
                   ),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: 8),
                   Expanded(
                     child: CustomTextField(
                       hintText: "Country code",
@@ -245,7 +245,7 @@ class _CompanyRegisterPageState extends State<CompanyRegisterPage> {
                   ),
                 ],
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 10),
               CustomTextField(
                 hintText: "Email",
                 prefixIcon: Icons.mail,
@@ -302,9 +302,10 @@ class _CompanyRegisterPageState extends State<CompanyRegisterPage> {
                 ),
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(18),
+                    borderRadius: BorderRadius.circular(10),
                   ),
-                  padding: const EdgeInsets.symmetric(vertical: 14),
+                  padding: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 20),
                   minimumSize: const Size(double.infinity, 0),
                   backgroundColor: Color.fromARGB(255, 4, 18, 67),
                 ),
@@ -362,14 +363,13 @@ class CustomTextField extends StatelessWidget {
         hintText: hintText,
         hintStyle: TextStyle(fontSize: 14),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(18),
-          borderSide: BorderSide.none,
+          borderRadius: BorderRadius.circular(10),
         ),
-        fillColor: Color.fromARGB(255, 52, 86, 208).withOpacity(0.1),
+        fillColor: Color.fromARGB(255, 255, 255, 255),
         filled: true,
         prefixIcon: Icon(prefixIcon),
-        contentPadding: EdgeInsets.symmetric(
-            vertical: 3, horizontal: 5), // Adjust padding here
+        contentPadding:EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 20), // Adjust padding here
       ),
       obscureText: obscureText,
     );

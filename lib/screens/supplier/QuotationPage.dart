@@ -17,8 +17,8 @@ class _QuotationPageState extends State<QuotationPage> {
   List<Map<String, dynamic>> actions = [
     {'title': 'Make Quotation', 'icon': Icons.add},
     {'title': 'View Quotations', 'icon': Icons.view_list},
-    {'title': 'Edit Quotations', 'icon': Icons.edit},
-    {'title': 'Send Quotations', 'icon': Icons.send},
+    {'title': 'Edit Quotations', 'icon': Icons.edit}
+   
   ];
 
   @override

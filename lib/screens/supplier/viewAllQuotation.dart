@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:project3/screens/manager/Tab_Items.dart';
 import 'package:project3/screens/supplier/Approved_Quot.dart';
+import 'package:project3/screens/supplier/DeliveryPage.dart';
+import 'package:project3/screens/supplier/EditQuotation.dart';
+import 'package:project3/screens/supplier/List_of_Accepted.dart';
+import 'package:project3/screens/supplier/OrderHistory.dart';
+import 'package:project3/screens/supplier/OrdersPage.dart';
+import 'package:project3/screens/supplier/Request_Tab.dart';
 import 'package:project3/screens/supplier/Sended_quot.dart';
+import 'package:project3/screens/supplier/SupplierAppDrawer.dart';
+import 'package:project3/screens/supplier/SupplierNavHome.dart';
+import 'package:project3/screens/supplier/SupplierSettingsPage.dart.dart';
 import 'package:project3/screens/supplier/Unsended_quot.dart';
 
 class viewAllQuotation extends StatelessWidget {
@@ -11,6 +19,8 @@ class viewAllQuotation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Color myColor = Color(0xFF1E2736);
+
     return DefaultTabController(
       length: 3,
       child: Scaffold(
@@ -24,6 +34,8 @@ class viewAllQuotation extends StatelessWidget {
               ),
             ],
           ),
+          iconTheme: IconThemeData(color: Colors.white), // Set the icon theme to white
+          backgroundColor: myColor,
           centerTitle: true,
           bottom: PreferredSize(
             preferredSize: const Size.fromHeight(40),
@@ -48,9 +60,9 @@ class viewAllQuotation extends StatelessWidget {
                     labelColor: Colors.white,
                     unselectedLabelColor: Colors.black54,
                     tabs: [
-                      TabItem(title: 'NOT SEND', count: 0,),
-                      TabItem(title: 'SEND', count: 0),
-                      TabItem(title: 'APPROVED', count: 0),
+                      Tab(text: 'NOT SEND'),
+                      Tab(text: 'SEND'),
+                      Tab(text: 'APPROVED'),
                     ],
                   ),
                 ),
@@ -65,6 +77,83 @@ class viewAllQuotation extends StatelessWidget {
             Center(child: Approved_Quot(username: username)),
           ],
         ),
+        drawer: SupplierAppDrawer(
+          drawerColor: myColor,
+          onHomeTap: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => SupplierNavHome(username: username)),
+            );
+          },
+          onQuotationsTap: () {
+            Navigator.pop(context); // Close drawer
+            // Implement any additional logic needed when Settings is tapped
+          },
+          onSettingsTap: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      SupplierSettingsPage(username: username)),
+            );
+          },
+          onRequestTap:
+              () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      Request_Tab(username: username)),
+            );
+          },
+          onStartQuotTap:
+              () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      List_of_Accepted(username: username)),
+            );
+          },
+          onmakeQuotTap:
+              () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      EditQuotation(username: username)),
+            );
+          },
+          onOrdersTap:
+              () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      OrdersPage(username: username)),
+            );
+          },
+          onUpdateOrderTap:
+              () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      DeliveryPage(username: username)),
+            );
+          },
+           onorderHistoryTap :
+        () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    OrderHistory(username: username)),
+          );
+        },
+        ),
+        
       ),
     );
   }

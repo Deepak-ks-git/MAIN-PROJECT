@@ -53,6 +53,9 @@ dependencies:
   path_provider: ^2.1.2
   giffy_dialog: ^2.1.0
   image_picker: ^1.1.1
+  flutter_launcher_icons: ^0.13.1
+  fluttertoast: ^8.2.5
+  
 
 
 dev_dependencies:
@@ -85,6 +88,7 @@ flutter:
     - assets/cancel.png
     - assets/accept.gif
     - assets/reject.png
+    - assets/icon/sparkle.png
 
   
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -2,12 +2,14 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:project3/screens/manager/AddStock.dart';
 
 class VerifyOrdersDetails extends StatefulWidget {
   final String procId;
   final String purchaseReqId;
 
-  const VerifyOrdersDetails({Key? key, required this.procId, required this.purchaseReqId})
+  const VerifyOrdersDetails(
+      {Key? key, required this.procId, required this.purchaseReqId})
       : super(key: key);
 
   @override
@@ -31,7 +33,8 @@ class _VerifyOrdersDetailsState extends State<VerifyOrdersDetails> {
   Future<void> fetchData() async {
     try {
       final response = await http.get(
-        Uri.parse('http://192.168.1.142:3000/get_Quot_id?procId=${widget.procId}'),
+        Uri.parse(
+            'http://192.168.1.143:3000/get_Quot_id?procId=${widget.procId}'),
       );
 
       if (response.statusCode == 200) {
@@ -45,7 +48,8 @@ class _VerifyOrdersDetailsState extends State<VerifyOrdersDetails> {
           await fetchDeliveryDate(quotId);
         }
       } else {
-        throw Exception('Failed to load quotation ID. Status Code: ${response.statusCode}');
+        throw Exception(
+            'Failed to load quotation ID. Status Code: ${response.statusCode}');
       }
     } catch (error) {
       print('Error fetching quotation ID: $error');
@@ -55,7 +59,7 @@ class _VerifyOrdersDetailsState extends State<VerifyOrdersDetails> {
   Future<void> fetchQuotationDetails(String quotId) async {
     try {
       final response = await http.get(
-        Uri.parse('http://192.168.1.142:3000/QUOTATION_TABLE?quotId=$quotId'),
+        Uri.parse('http://192.168.1.143:3000/QUOTATION_TABLE?quotId=$quotId'),
       );
 
       if (response.statusCode == 200) {
@@ -63,12 +67,14 @@ class _VerifyOrdersDetailsState extends State<VerifyOrdersDetails> {
         setState(() {
           items = data;
           if (items.isNotEmpty) {
-            calculateDiscount((items[0][5] as num).toDouble(), (items[0][7] as num).toDouble());
+            calculateDiscount((items[0][5] as num).toDouble(),
+                (items[0][7] as num).toDouble());
             calculateTotalNetPrice();
           }
         });
       } else {
-        throw Exception('Failed to load quotation details. Status Code: ${response.statusCode}');
+        throw Exception(
+            'Failed to load quotation details. Status Code: ${response.statusCode}');
       }
     } catch (error) {
       print('Error fetching quotation details: $error');
@@ -78,16 +84,19 @@ class _VerifyOrdersDetailsState extends State<VerifyOrdersDetails> {
   Future<void> fetchDeliveryDate(String quotId) async {
     try {
       final response = await http.get(
-        Uri.parse('http://192.168.1.142:3000/getDeliveryDate?quotId=$quotId'), // API endpoint for fetching delivery date
+        Uri.parse(
+            'http://192.168.1.143:3000/getDeliveryDate?quotId=$quotId'), // API endpoint for fetching delivery date
       );
 
       if (response.statusCode == 200) {
         final Map<String, dynamic> data = json.decode(response.body);
         setState(() {
-          deliveryDate = data['deliveryDate'] ?? ''; // Extract deliveryDate from API response
+          deliveryDate = data['deliveryDate'] ??
+              ''; // Extract deliveryDate from API response
         });
       } else {
-        throw Exception('Failed to load delivery date. Status Code: ${response.statusCode}');
+        throw Exception(
+            'Failed to load delivery date. Status Code: ${response.statusCode}');
       }
     } catch (error) {
       print('Error fetching delivery date: $error');
@@ -105,7 +114,8 @@ class _VerifyOrdersDetailsState extends State<VerifyOrdersDetails> {
   double calculateTotalNetUnitPrice() {
     double total = 0.0;
     for (var item in items) {
-      total += (item[6] as num).toDouble(); // Index 6 corresponds to the net unit price
+      total += (item[6] as num)
+          .toDouble(); // Index 6 corresponds to the net unit price
     }
     return total;
   }
@@ -119,10 +129,12 @@ class _VerifyOrdersDetailsState extends State<VerifyOrdersDetails> {
 
   String _formatDeliveryDate(String date) {
     DateTime parsedDate = DateTime.parse(date);
-    String formattedDay = '${parsedDate.day}${_getOrdinalSuffix(parsedDate.day)}';
+    String formattedDay =
+        '${parsedDate.day}${_getOrdinalSuffix(parsedDate.day)}';
     String formattedMonth = _getMonthName(parsedDate.month);
     String formattedYear = parsedDate.year.toString();
-    String formattedDate = '$formattedDay $formattedMonth $formattedYear (${parsedDate.day}/${parsedDate.month}/${parsedDate.year})';
+    String formattedDate =
+        '$formattedDay $formattedMonth $formattedYear (${parsedDate.day}/${parsedDate.month}/${parsedDate.year})';
     return formattedDate;
   }
 
@@ -206,25 +218,33 @@ class _VerifyOrdersDetailsState extends State<VerifyOrdersDetails> {
                         dataRowHeight: 30, // Set the height of each DataRow
                         columns: [
                           DataColumn(
-                            label: Text('Item Name', style: TextStyle(fontSize: 14)),
+                            label: Text('Item Name',
+                                style: TextStyle(fontSize: 14)),
                           ),
                           DataColumn(
-                            label: Text('Quantity', style: TextStyle(fontSize: 14)),
+                            label: Text('Quantity',
+                                style: TextStyle(fontSize: 14)),
                           ),
                           DataColumn(
-                            label: Text('Unit Price', style: TextStyle(fontSize: 14)),
+                            label: Text('Unit Price',
+                                style: TextStyle(fontSize: 14)),
                           ),
                           DataColumn(
-                            label: Text('Net Unit Price', style: TextStyle(fontSize: 14)),
+                            label: Text('Net Unit Price',
+                                style: TextStyle(fontSize: 14)),
                           ),
                         ],
                         rows: items.map<DataRow>((item) {
                           return DataRow(
                             cells: [
-                              DataCell(Text('${item[1]}', style: TextStyle(fontSize: 14))),
-                              DataCell(Text('${item[2]}', style: TextStyle(fontSize: 14))),
-                              DataCell(Text('${item[3]}', style: TextStyle(fontSize: 14))),
-                              DataCell(Text('${item[6]}', style: TextStyle(fontSize: 14))),
+                              DataCell(Text('${item[1]}',
+                                  style: TextStyle(fontSize: 14))),
+                              DataCell(Text('${item[2]}',
+                                  style: TextStyle(fontSize: 14))),
+                              DataCell(Text('${item[3]}',
+                                  style: TextStyle(fontSize: 14))),
+                              DataCell(Text('${item[6]}',
+                                  style: TextStyle(fontSize: 14))),
                             ],
                           );
                         }).toList(),
@@ -262,7 +282,8 @@ class _VerifyOrdersDetailsState extends State<VerifyOrdersDetails> {
                           SizedBox(height: 10),
                           Text(
                             'Total Net Price: ${totalNetPrice.toStringAsFixed(2)}',
-                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.w500),
                           ),
                         ],
                       ),
@@ -275,71 +296,101 @@ class _VerifyOrdersDetailsState extends State<VerifyOrdersDetails> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        Row(
+                          children: [
+                            Icon(Icons.calendar_month),
+                            Text(
+                              ' Delivery Date : ',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                                                SizedBox(height: 5),
+
                         Text(
-                          'Delivery Date: ${deliveryDate.isNotEmpty ? _formatDeliveryDate(deliveryDate) : "Date to be selected by supplier"}',
+                          '      ${deliveryDate.isNotEmpty ? _formatDeliveryDate(deliveryDate) : "Date to be selected by supplier"}',
                           style: TextStyle(
-                            fontSize: 20,
+                            fontSize: 18,
                             fontWeight: FontWeight.bold,
                             color: Colors.blue,
                           ),
                         ),
-                        SizedBox(height: 20),
-                        
+                        Divider(thickness: 2,),
+                        SizedBox(height: 5),
                       ],
                     ),
                   ),
                 ],
               ),
             ),
-             SizedBox(height: 30),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Center(
-              child: ElevatedButton(
-                onPressed: () {
-                  // Call API to update delivery status
-                  updateDeliveryStatus();
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Color.fromARGB(255, 41, 181, 45),
-                  padding: EdgeInsets.symmetric(vertical: 16, horizontal: 40),
-                  
+            SizedBox(height: 30),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+              child: Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                    // Call API to update delivery status
+                    updateDeliveryStatus();
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color.fromARGB(255, 41, 181, 45),
+                    padding: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+                  ),
+                  child: Text(
+                    
+                    'Confirm Delivery',
+                    style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
+                  ),
                 ),
-                child: Text('Confirm Delivery',style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,color: Colors.white
-                  ),),
               ),
             ),
-          ),
           ],
         ),
       ),
     );
   }
 
+  void updateDeliveryStatus() async {
+    try {
+      final response = await http.post(
+        Uri.parse('http://192.168.1.143:3000/Complete_Order'),
+        body: jsonEncode(
+            {'quot_id': quotId}), // Assuming quotId is accessible here
+        headers: {'Content-Type': 'application/json'},
+      );
 
-void updateDeliveryStatus() async {
-  try {
-    final response = await http.post(
-      Uri.parse('http://192.168.1.142:3000/Complete_Order'),
-      body: jsonEncode({'quot_id': quotId}), // Assuming quotId is accessible here
-      headers: {'Content-Type': 'application/json'},
-    );
+      if (response.statusCode == 200) {
 
-    if (response.statusCode == 200) {
-      // Handle successful update
-      print('Delivery status updated successfully');
-      // You can also update the UI here if needed
-    } else {
-      throw Exception('Failed to update delivery status. Status Code: ${response.statusCode}');
+        // Handle successful update
+
+        print('Delivery status updated successfully');
+           ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Stock added successfully'),
+            duration: Duration(seconds: 2),
+          ),
+        );
+        // Delay and navigate to another page
+        await Future.delayed(Duration(seconds: 1));
+        Navigator.pop(context);
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => AddStock()),
+        );
+        // You can also update the UI here if needed
+      } else {
+        throw Exception(
+            'Failed to update delivery status. Status Code: ${response.statusCode}');
+      }
+    } catch (error) {
+      print('Error updating delivery status: $error');
+      // Handle error
     }
-  } catch (error) {
-    print('Error updating delivery status: $error');
-    // Handle error
   }
 }
-
-}
-
-

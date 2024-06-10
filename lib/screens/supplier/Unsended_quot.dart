@@ -25,7 +25,7 @@ class _Unsended_quotState extends State<Unsended_quot> {
 
   Future<void> fetchNewRequests() async {
     try {
-      final response = await http.get(Uri.parse('http://192.168.1.142:3000/NOTSENDED_of_Quotation?username=${widget.username}'));
+      final response = await http.get(Uri.parse('http://192.168.1.143:3000/NOTSENDED_of_Quotation?username=${widget.username}'));
 
       if (response.statusCode == 200) {
         final List<dynamic> data = json.decode(response.body);
@@ -70,7 +70,7 @@ class _Unsended_quotState extends State<Unsended_quot> {
     if (confirmed == true) {
       try {
         final response = await http.post(
-          Uri.parse('http://192.168.1.142:3000/send_quotation'),
+          Uri.parse('http://192.168.1.143:3000/send_quotation'),
           body: {'purchaseReqId': purchaseReqId},
         );
 

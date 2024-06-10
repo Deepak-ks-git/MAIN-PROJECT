@@ -1,76 +1,151 @@
 import 'package:flutter/material.dart';
 import 'package:project3/screens/Admin/ALL_proc.dart';
-import 'package:project3/screens/Admin/CreateProcurement.dart';
-import 'package:project3/screens/Admin/add_managers_screen.dart';
+import 'package:project3/screens/Admin/AddItemScreen.dart';
+import 'package:project3/screens/Admin/AddProcurement.dart';
+import 'package:project3/screens/Admin/ReportPage.dart';
+import 'package:project3/screens/Admin/ViewItems.dart';
+import 'package:project3/screens/Admin/ViewProcurements.dart';
 import 'package:project3/screens/Admin/app_drawer.dart';
 import 'package:project3/screens/Admin/settings_page.dart';
+import 'package:project3/screens/manager/View_Stock.dart';
+
+
 
 class NavHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    Color myColor = Color(0xFF1C2951);
+    Color myColor = Color(0xFF1E2736);
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: myColor,
         title: Text(
-          'Home',
+          'Admin Home',
           style: TextStyle(color: Colors.white, fontSize: 18),
         ),
-        leading: Builder(
-          builder: (BuildContext context) {
-            return IconButton(
-              icon: Icon(Icons.menu, color: Colors.white),
-              onPressed: () {
-                Scaffold.of(context).openDrawer();
-              },
-            );
-          },
-        ),
+        backgroundColor: myColor,
+       /* actions: [
+          IconButton(
+            icon: Icon(Icons.headset_mic),
+            color: Colors.white,
+            onPressed: () {},
+          ),
+          IconButton(
+            icon: Icon(Icons.notifications),
+            color: Colors.white,
+            onPressed: () {},
+          ),
+        ],
+        */
+        iconTheme: IconThemeData(color: Colors.white),
       ),
-      body: Column(
+      body: Stack(
         children: [
-          Expanded(
-            child: SingleChildScrollView(
+          Column(
+            children: [
+              Container(
+                height: 150,
+                color: myColor,
+              ),
+              Expanded(
+                child: Container(
+                  color: Color.fromARGB(244, 234, 233, 233),
+                ),
+              ),
+            ],
+          ),
+          SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(15.0),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  GridView.count(
-                    crossAxisCount: 2,
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    children: [
-                      FeatureTile(
-                        icon: Icons.people,
-                        text: 'Add Managers',
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => AddManagersScreen()),
-                          );
-                        },
+                  Card(
+                    color: Color.fromRGBO(255, 255, 255, 1),
+                    elevation: 1,
+                    margin: EdgeInsets.symmetric(vertical: 10),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Icon(Icons.auto_awesome),
+                              SizedBox(width: 8.0),
+                              Text(
+                                'Get Started',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 8),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 20),
+                            child: Text(
+                              'Welcome to the Smart-Way! We\'re excited to help you get started with your procurement.',
+                              style: TextStyle(fontSize: 14),
+                            ),
+                          ),
+                          SizedBox(height: 16),
+                          Row(
+                            children: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          ALL_proc(),
+                                    ),
+                                  );
+                                },
+                                child: Text('Procurement'),
+                                style: TextButton.styleFrom(
+                                  foregroundColor: Colors.grey[900],
+                                  backgroundColor:
+                                      Color.fromRGBO(230, 230, 248, 0.961),
+                                  minimumSize: Size(135, 36),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(30),
+                                  ),
+                                ),
+                              ),
+                              Spacer(),
+                              Padding(
+                                padding: const EdgeInsets.only(right: 30),
+                                child: TextButton(
+                                  onPressed: () {
+                                     Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            View_Stock(),
+                                      ),
+                                    );
+                                  },
+                                  child: Text('Stock'),
+                                  style: TextButton.styleFrom(
+                                    foregroundColor: Colors.grey[900],
+                                    backgroundColor:
+                                        Color.fromRGBO(235, 235, 250, 0.961),
+                                    minimumSize: Size(135, 36),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(30),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )
+             ],
                       ),
-                      FeatureTile(
-                        icon: Icons.shopping_cart,
-                        text: 'Create Procurement',
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => CreateProcurement()),
-                          );
-                        },
-                      ),
-                      FeatureTile(
-                        icon: Icons.shopping_cart,
-                        text: 'Procurements',
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => ALL_proc()),
-                          );
-                        },
-                      ),
-                    ],
+                    ),
                   ),
+                  SizedBox(height: 10),
+                  
                 ],
               ),
             ),
@@ -84,9 +159,45 @@ class NavHomePage extends StatelessWidget {
           // Implement any additional logic needed when Home is tapped
         },
         onSettingsTap: () {
-          Navigator.push(
+          Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (context) => SettingsPage()),
+          );
+        },
+        onReportTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ReportPage()),
+          );
+        },
+         onItemTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ViewItems()),
+          );
+        },
+        onAddItemTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => AddItemScreen()),
+          );
+        },
+        onProcurementsTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ALL_proc()),
+          );
+        },
+        onAddProcurementTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => AddProcurement()),
+          );
+        },
+        onStartProcTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ViewProcurements()),
           );
         },
       ),

@@ -23,7 +23,7 @@ class _SupplierProfileState extends State<SupplierProfile> {
 
   Future<List<dynamic>> fetchSupplierDetails(String username) async {
     final response = await http.get(
-      Uri.parse('http://192.168.1.142:3000/SupplierDetails?username=$username'),
+      Uri.parse('http://192.168.1.143:3000/SupplierDetails?username=$username'),
     );
     if (response.statusCode == 200) {
       return jsonDecode(response.body);

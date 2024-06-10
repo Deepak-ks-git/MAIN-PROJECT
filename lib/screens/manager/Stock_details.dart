@@ -31,7 +31,7 @@ class _Stock_detailsState extends State<Stock_details> {
   Future<void> fetchData() async {
     try {
       final response = await http.get(
-        Uri.parse('http://192.168.1.142:3000/get_Quot_id?procId=${widget.procId}'),
+        Uri.parse('http://192.168.1.143:3000/get_Quot_id?procId=${widget.procId}'),
       );
 
       if (response.statusCode == 200) {
@@ -55,7 +55,7 @@ class _Stock_detailsState extends State<Stock_details> {
   Future<void> fetchQuotationDetails(String quotId) async {
     try {
       final response = await http.get(
-        Uri.parse('http://192.168.1.142:3000/QUOTATION_TABLE?quotId=$quotId'),
+        Uri.parse('http://192.168.1.143:3000/QUOTATION_TABLE?quotId=$quotId'),
       );
 
       if (response.statusCode == 200) {
@@ -78,7 +78,7 @@ class _Stock_detailsState extends State<Stock_details> {
   Future<void> fetchDeliveryDate(String quotId) async {
     try {
       final response = await http.get(
-        Uri.parse('http://192.168.1.142:3000/getDeliveryDate?quotId=$quotId'), // API endpoint for fetching delivery date
+        Uri.parse('http://192.168.1.143:3000/getDeliveryDate?quotId=$quotId'), // API endpoint for fetching delivery date
       );
 
       if (response.statusCode == 200) {

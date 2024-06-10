@@ -32,7 +32,7 @@ class _SendedDetailsState extends State<APPROVEDDetails> {
   Future<void> fetchData() async {
     try {
       final response = await http.get(
-        Uri.parse('http://192.168.1.142:3000/get_Quot_id?procId=${widget.procId}'),
+        Uri.parse('http://192.168.1.143:3000/get_Quot_id?procId=${widget.procId}'),
       );
 
       if (response.statusCode == 200) {
@@ -55,7 +55,7 @@ class _SendedDetailsState extends State<APPROVEDDetails> {
   Future<void> fetchQuotationDetails(String quotId) async {
     try {
       final response = await http.get(
-        Uri.parse('http://192.168.1.142:3000/QUOTATION_TABLE?quotId=$quotId'),
+        Uri.parse('http://192.168.1.143:3000/QUOTATION_TABLE?quotId=$quotId'),
       );
 
       if (response.statusCode == 200) {
@@ -124,44 +124,64 @@ class _SendedDetailsState extends State<APPROVEDDetails> {
   }
 
   Future<void> _confirmDeliveryDate() async {
-    if (selectedDeliveryDate != DateTime.now()) {
-      try {
-        final formattedDate = DateFormat('yyyy-MM-dd').format(selectedDeliveryDate);
+  if (selectedDeliveryDate != DateTime.now()) {
+    try {
+      final formattedDate = DateFormat('yyyy-MM-dd').format(selectedDeliveryDate);
 
-        final response = await http.post(
-          Uri.parse('http://192.168.1.142:3000/insertOrUpdateOrder'),
-          headers: <String, String>{
-            'Content-Type': 'application/json; charset=UTF-8',
-          },
-          body: jsonEncode({
-            'quot_id': quotId,
-            'exp_delivery_date': formattedDate,
-          }),
-        );
+      final response = await http.post(
+        Uri.parse('http://192.168.1.143:3000/insertOrUpdateOrder'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode({
+          'quot_id': quotId,
+          'exp_delivery_date': formattedDate,
+          'total_net_price': totalNetPrice, // Add Total Net Price here
+        }),
+      );
 
-        if (response.statusCode == 200) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Order updated successfully'),
-              duration: Duration(seconds: 2),
-            ),
-          );
-        } else {
-          throw Exception('Failed to update order. Status Code: ${response.statusCode}');
-        }
-      } catch (error) {
-        print('Error updating order: $error');
+      if (response.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error updating order'),
+            content: Text('Order updated successfully'),
             duration: Duration(seconds: 2),
           ),
         );
+      } else {
+        throw Exception('Failed to update order. Status Code: ${response.statusCode}');
       }
-    } else {
-      print('Selected delivery date is the current date');
+    } catch (error) {
+      print('Error updating order: $error');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error updating order'),
+          duration: Duration(seconds: 2),
+        ),
+      );
     }
+  } else {
+    print('Selected delivery date is the current date');
   }
+}
+
+Future<void> generateQuotationPDF(String quotId) async {
+  try {
+    final response = await http.get(
+      Uri.parse('http://192.168.1.143:3000/api/generate-quotation-pdf/$quotId'),
+    );
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> responseData = json.decode(response.body);
+      print('PDF generated successfully: ${responseData['pdfPath']}');
+      // Implement logic to handle the generated PDF, such as downloading it
+    } else {
+      throw Exception('Failed to generate quotation PDF. Status Code: ${response.statusCode}');
+    }
+  } catch (error) {
+    print('Error generating quotation PDF: $error');
+  }
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -292,6 +312,17 @@ class _SendedDetailsState extends State<APPROVEDDetails> {
                       ),
                     ),
                   ),
+                                    SizedBox(height: 40),
+                   SizedBox(width: 16),
+     FloatingActionButton(
+      onPressed: () {
+        // Call API to generate quotation PDF here
+        generateQuotationPDF(quotId);
+      },
+      heroTag: 'downloadButton', // Unique tag for the download FAB
+      child: Icon(Icons.download), // Download icon
+    ),
+    SizedBox(width: 16),
                 ],
               ),
             ),

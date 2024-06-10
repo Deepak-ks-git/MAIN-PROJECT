@@ -32,7 +32,7 @@ class _Delivery_DetailsState extends State<Delivery_Details> {
   Future<void> fetchData() async {
     try {
       final response = await http.get(
-        Uri.parse('http://192.168.1.142:3000/get_Quot_id?procId=${widget.procId}'),
+        Uri.parse('http://192.168.1.143:3000/get_Quot_id?procId=${widget.procId}'),
       );
 
       if (response.statusCode == 200) {
@@ -56,7 +56,7 @@ class _Delivery_DetailsState extends State<Delivery_Details> {
   Future<void> fetchQuotationDetails(String quotId) async {
     try {
       final response = await http.get(
-        Uri.parse('http://192.168.1.142:3000/QUOTATION_TABLE?quotId=$quotId'),
+        Uri.parse('http://192.168.1.143:3000/QUOTATION_TABLE?quotId=$quotId'),
       );
 
       if (response.statusCode == 200) {
@@ -79,7 +79,7 @@ class _Delivery_DetailsState extends State<Delivery_Details> {
   Future<void> fetchDeliveryDate(String quotId) async {
     try {
       final response = await http.get(
-        Uri.parse('http://192.168.1.142:3000/getDeliveryDate?quotId=$quotId'), // API endpoint for fetching delivery date
+        Uri.parse('http://192.168.1.143:3000/getDeliveryDate?quotId=$quotId'), // API endpoint for fetching delivery date
       );
 
       if (response.statusCode == 200) {
@@ -177,7 +177,7 @@ class _Delivery_DetailsState extends State<Delivery_Details> {
   Future<void> updateDeliveryStatus(String status) async {
     try {
       final response = await http.post(
-        Uri.parse('http://192.168.1.142:3000/updateDeliveryStatus'),
+        Uri.parse('http://192.168.1.143:3000/updateDeliveryStatus'),
         body: {
           'quot_id': quotId,
           'status': status,
@@ -188,6 +188,16 @@ class _Delivery_DetailsState extends State<Delivery_Details> {
         // Handle success
         print('Delivery status updated successfully');
         // Optionally show a message or update UI
+          ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Status Updated Sucessfully'),
+            duration: Duration(seconds: 2),
+          ),
+        );
+        // Delay and navigate to another page
+        await Future.delayed(Duration(seconds: 1));
+        Navigator.pop(context);
+        Navigator.pop(context);
       } else {
         // Handle error
         print('Failed to update delivery status');

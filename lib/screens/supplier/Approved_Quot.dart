@@ -25,7 +25,7 @@ class _Accepted_RequestState extends State<Approved_Quot> {
 
   Future<void> fetchNewRequests() async {
     try {
-      final response = await http.get(Uri.parse('http://192.168.1.142:3000/APPROVED_of_Quotation?username=${widget.username}'));
+      final response = await http.get(Uri.parse('http://192.168.1.143:3000/APPROVED_of_Quotation?username=${widget.username}'));
       print('Response body: ${response.body}');
 
       if (response.statusCode == 200) {
@@ -50,7 +50,7 @@ class _Accepted_RequestState extends State<Approved_Quot> {
 
   Future<String> fetchProcurementDescription(String procId) async {
     try {
-      final response = await http.get(Uri.parse('http://192.168.1.142:3000/ProcurementDescription?procId=$procId'));
+      final response = await http.get(Uri.parse('http://192.168.1.143:3000/ProcurementDescription?procId=$procId'));
       if (response.statusCode == 200) {
         final description = json.decode(response.body)['description'];
         return description;

@@ -23,7 +23,7 @@ class _EmpLoginState extends State<LoginPage> {
   Future<void> UserLogin() async {
     final String user = username.text;
     final response = await http.get(
-      Uri.parse('http://192.168.1.142:3000/username?user=$user'),
+      Uri.parse('http://192.168.1.143:3000/username?user=$user'),
     );
     if (response.statusCode == 200) {
       final Map<String, dynamic> data = json.decode(response.body);
@@ -37,7 +37,7 @@ class _EmpLoginState extends State<LoginPage> {
     } else {
       final String pass = password.text;
       final response = await http.get(
-        Uri.parse('http://192.168.1.142:3000/login?user=$user&pass=$pass'),
+        Uri.parse('http://192.168.1.143:3000/login?user=$user&pass=$pass'),
       );
 
       if (response.statusCode == 200) {
@@ -47,7 +47,7 @@ class _EmpLoginState extends State<LoginPage> {
       }
       if (message2 == 'valid') {
         final roleResponse = await http.get(
-          Uri.parse('http://192.168.1.142:3000/roless?user=$user'),
+          Uri.parse('http://192.168.1.143:3000/roless?user=$user'),
         );
         if (roleResponse.statusCode == 200) {
           final Map<String, dynamic> roleData = json.decode(roleResponse.body);
@@ -89,25 +89,22 @@ class _EmpLoginState extends State<LoginPage> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text(
+                   Text(
                     "Welcome Back",
                     style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                   ),
                   Text("Enter your credential to login"),
-                ],
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
+                  SizedBox(height: 60,),
                   TextField(
                     controller: username,
                     decoration: InputDecoration(
                       hintText: "Username or Email",
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(18),
-                        borderSide: BorderSide.none,
+                        borderRadius: BorderRadius.circular(10),
                       ),
+                      fillColor: Colors.white,
                       filled: true,
                       prefixIcon: const Icon(Icons.person),
                       contentPadding: EdgeInsets.symmetric(
@@ -124,47 +121,70 @@ class _EmpLoginState extends State<LoginPage> {
                     decoration: InputDecoration(
                       hintText: "Password",
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(18),
-                        borderSide: BorderSide.none,
+                        borderRadius: BorderRadius.circular(10),
                       ),
+                      fillColor: Colors.white,
                       filled: true,
                       prefixIcon: const Icon(Icons.password),
                       contentPadding: EdgeInsets.symmetric(
                           vertical: 5, horizontal: 15), // Adjust padding
                     ),
                     obscureText: true,
-                    style: TextStyle(
-                      height: 0.5, // Adjust height
-                    ),
                   ),
                   const SizedBox(
                       height:
                           10), // Reduced height between input boxes and button
-                  ElevatedButton(
-                    onPressed: () async {
-                      if (username.text.isEmpty && password.text.isEmpty) {
-                        QuickAlert.show(
-                          context: context,
-                          type: QuickAlertType.warning,
-                          text: 'All fields are required',
-                        );
-                      } else {
-                        await UserLogin();
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18),
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 5, horizontal: 50), // Adjust padding
-                      backgroundColor: Color.fromARGB(255, 4, 18, 67),
+                  Container(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        ElevatedButton(
+                          onPressed: () async {
+                            if (username.text.isEmpty && password.text.isEmpty) {
+                              QuickAlert.show(
+                                context: context,
+                                type: QuickAlertType.warning,
+                                text: 'All fields are required',
+                              );
+                            } else {
+                              await UserLogin();
+                            }
+                          },
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 10, horizontal: 20), // Adjust padding
+                            backgroundColor: Color.fromARGB(255, 4, 18, 67),
+                          ),
+                          child: const Text(
+                            "Login",
+                            style: TextStyle(fontSize: 16, color: Colors.white),
+                          ),
+                        ),
+                      ],
                     ),
-                    child: const Text(
-                      "Login",
-                      style: TextStyle(fontSize: 20, color: Colors.white),
-                    ),
-                  )
+                  ),
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text("Dont have an account? "),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => SignupPage()));
+                        },
+                        child: const Text(
+                          "Sign Up",
+                          style: TextStyle(color: Colors.blue),
+                        ),
+                      )
+                    ],
+                  ),
                 ],
               ),
               /* TextButton(
@@ -174,24 +194,6 @@ class _EmpLoginState extends State<LoginPage> {
                   //style: TextStyle(color: Colors.purple),
                 ),
               ),*/
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text("Dont have an account? "),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => SignupPage()));
-                    },
-                    child: const Text(
-                      "Sign Up",
-                      style: TextStyle(color: Colors.blue),
-                    ),
-                  )
-                ],
-              ),
             ],
           ),
         ),

@@ -32,7 +32,7 @@ class _ProcurementDetailsPageState extends State<Details_OnGoing_proc> {
 
   Future<void> fetchProcurements() async {
     final response = await http.get(
-        Uri.parse('http://192.168.1.142:3000/getProc?procId=${widget.procId}'));
+        Uri.parse('http://192.168.1.143:3000/getProc?procId=${widget.procId}'));
     if (response.statusCode == 200) {
       final List<dynamic> data = json.decode(response.body);
       setState(() {
@@ -52,7 +52,7 @@ class _ProcurementDetailsPageState extends State<Details_OnGoing_proc> {
 
   Future<void> fetchProcurementDetails(String procId) async {
     final response = await http.get(Uri.parse(
-        'http://192.168.1.142:3000/ProcureItemDetails?procId=$procId'));
+        'http://192.168.1.143:3000/ProcureItemDetails?procId=$procId'));
     if (response.statusCode == 200) {
       final List<dynamic> data = json.decode(response.body);
       setState(() {
@@ -69,7 +69,7 @@ class _ProcurementDetailsPageState extends State<Details_OnGoing_proc> {
 
   Future<void> fetchPurchaseRequestDetails(String procId) async {
     final response = await http.get(Uri.parse(
-        'http://192.168.1.142:3000/reqdetails_for_sending?procId=$procId'));
+        'http://192.168.1.143:3000/reqdetails_for_sending?procId=$procId'));
     if (response.statusCode == 200) {
       final List<dynamic> data = json.decode(response.body);
       setState(() {
@@ -89,7 +89,7 @@ class _ProcurementDetailsPageState extends State<Details_OnGoing_proc> {
   Future<void> fetchAndDisplaySupplierDetails(String supplierId) async {
     final response = await http.get(
       Uri.parse(
-          'http://192.168.1.142:3000/supplier_details_for_sending?supplierId=$supplierId'),
+          'http://192.168.1.143:3000/supplier_details_for_sending?supplierId=$supplierId'),
     );
 
     if (response.statusCode == 200) {
@@ -117,7 +117,7 @@ class _ProcurementDetailsPageState extends State<Details_OnGoing_proc> {
 
   Future<void> fetchPurchaseRequestStatus() async {
     final response = await http.get(
-        Uri.parse('http://192.168.1.142:3000/purchase_request_status?procId=${widget.procId}'));
+        Uri.parse('http://192.168.1.143:3000/purchase_request_status?procId=${widget.procId}'));
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> data = json.decode(response.body);
@@ -158,7 +158,7 @@ class _ProcurementDetailsPageState extends State<Details_OnGoing_proc> {
   Future<void> cancelPurchaseRequest() async {
     try {
       final response = await http.post(
-        Uri.parse('http://192.168.1.142:3000/cancel_request'),
+        Uri.parse('http://192.168.1.143:3000/cancel_request'),
         body: {'procId': widget.procId},
       );
       if (response.statusCode == 200) {
@@ -214,7 +214,7 @@ class _ProcurementDetailsPageState extends State<Details_OnGoing_proc> {
 
   Future<void> downloadPDF(String procId) async {
   // Make API call to download PDF
-  final response = await http.get(Uri.parse('http://192.168.1.142:3000/api/generate-procurement-pdf/$procId'));
+  final response = await http.get(Uri.parse('http://192.168.1.143:3000/api/generate-procurement-pdf/$procId'));
 
   // Check if the response is successful
   if (response.statusCode == 200) {

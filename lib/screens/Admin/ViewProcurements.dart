@@ -1,8 +1,17 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:project3/screens/Admin/ALL_proc.dart';
+import 'package:project3/screens/Admin/AddItemScreen.dart';
+import 'package:project3/screens/Admin/AddProcurement.dart';
+import 'package:project3/screens/Admin/Admin_Homepage.dart';
 import 'package:project3/screens/Admin/ProcurementDetailsPage.dart';
+import 'package:project3/screens/Admin/ReportPage.dart';
+import 'package:project3/screens/Admin/ViewItems.dart';
+import 'package:project3/screens/Admin/app_drawer.dart';
+import 'package:project3/screens/Admin/settings_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -35,7 +44,7 @@ class _ViewProcurementsState extends State<ViewProcurements> {
 
   Future<void> fetchProcurements() async {
     try {
-      final response = await http.get(Uri.parse('http://192.168.1.142:3000/getProcurements'));
+      final response = await http.get(Uri.parse('http://192.168.1.143:3000/getProcurements'));
       if (response.statusCode == 200) {
         final List<dynamic> data = json.decode(response.body);
         setState(() {
@@ -76,9 +85,13 @@ class _ViewProcurementsState extends State<ViewProcurements> {
 
   @override
   Widget build(BuildContext context) {
+     Color myColor = Color(0xFF1E2736);
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('View Procurements'),
+        title: Text('Start Procurement', style: TextStyle(color: Colors.white)),
+        backgroundColor: myColor,
+        iconTheme: IconThemeData(color: Colors.white), // Set the icon theme to white
       ),
       body: GridView.builder(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -153,6 +166,56 @@ class _ViewProcurementsState extends State<ViewProcurements> {
           );
         },
       ),
+            drawer: AppDrawer(
+        drawerColor: myColor,
+        onHomeTap: () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => NavHomePage()),
+          );
+        },
+        onSettingsTap: () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => SettingsPage()),
+          );
+        },
+      onStartProcTap  : () {
+          Navigator.pop(context); // Close drawer if already on Report page
+        },
+        onItemTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ViewItems()),
+          );
+        },
+         onAddItemTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => AddItemScreen()),
+          );
+        },
+         onProcurementsTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ALL_proc()),
+          );
+        },
+         onAddProcurementTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => AddProcurement()),
+          );
+        },
+        onReportTap : () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ReportPage()),
+          );
+        },
+   
+      ),
+    
     );
   }
 }

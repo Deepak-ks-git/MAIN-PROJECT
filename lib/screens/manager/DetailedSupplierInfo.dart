@@ -1,11 +1,13 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class DetailedSupplierInfo extends StatefulWidget {
   final String supplierId;
 
-  const DetailedSupplierInfo({Key? key, required this.supplierId}) : super(key: key);
+  const DetailedSupplierInfo({Key? key, required this.supplierId})
+      : super(key: key);
 
   @override
   _DetailedSupplierInfoState createState() => _DetailedSupplierInfoState();
@@ -21,13 +23,75 @@ class _DetailedSupplierInfoState extends State<DetailedSupplierInfo> {
   }
 
   Future<List<String?>> fetchSupplierDetails(String supplierId) async {
-    final response = await http.get(Uri.parse('http://192.168.1.142:3000/SupplierDetails?username=$supplierId'));
+    final response = await http.get(Uri.parse(
+        'http://192.168.1.143:3000/SupplierDetails?username=$supplierId'));
 
     if (response.statusCode == 200) {
       List<dynamic> data = jsonDecode(response.body);
       return List<String?>.from(data.map((e) => e.toString()));
     } else {
       throw Exception('Failed to load supplier details');
+    }
+  }
+
+  void _showBlacklistDialog(BuildContext context) {
+    String reason = '';
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Blacklist Supplier'),
+          content: TextField(
+            decoration: InputDecoration(labelText: 'Reason'),
+            onChanged: (value) {
+              reason = value;
+            },
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () async {
+                Navigator.of(context).pop();
+                await blacklistSupplier(reason);
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> blacklistSupplier(String reason) async {
+    try {
+      final response = await http.post(
+        Uri.parse('http://192.168.1.143:3000/Blacklist_api'),
+        body: {
+          'supplierId': widget.supplierId,
+          'reason': reason,
+        },
+      );
+
+      if (response.statusCode == 200) {
+        // Show success message
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Supplier blacklisted successfully')));
+      } else {
+        // Show error message
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Failed to blacklist supplier')));
+      }
+    } catch (error) {
+      print('Error: $error');
+      // Show error message
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to blacklist supplier')));
     }
   }
 
@@ -85,7 +149,33 @@ class _DetailedSupplierInfoState extends State<DetailedSupplierInfo> {
                           _buildInfoRow('Address 3', supplierDetails[9]),
                           _buildInfoRow('GST Number', supplierDetails[10]),
                           _buildInfoRow('Status', supplierDetails[11]),
+
+                          const SizedBox(height: 20,),
                           // Add more rows as needed
+                          Center(
+                            child: ElevatedButton(
+                              onPressed: () {
+                                _showBlacklistDialog(context);
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.black, // Background color
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                                      10.0), // Rounded corners
+                                ),
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 15.0,
+                                    horizontal: 20.0), // Button padding
+                              ),
+                              child: Text(
+                                'Blacklist Supplier',
+                                style: TextStyle(
+                                  color: Colors.white, // Text color
+                                  fontSize: 16.0, // Text size
+                                ),
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                     ),

@@ -3,9 +3,20 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:project3/screens/supplier/Delivery_Details.dart';
+import 'package:project3/screens/supplier/EditQuotation.dart';
+import 'package:project3/screens/supplier/List_of_Accepted.dart';
+import 'package:project3/screens/supplier/OrderHistory.dart';
+import 'package:project3/screens/supplier/OrdersPage.dart';
+import 'package:project3/screens/supplier/Request_Tab.dart';
+import 'package:project3/screens/supplier/SupplierAppDrawer.dart';
+import 'package:project3/screens/supplier/SupplierNavHome.dart';
+import 'package:project3/screens/supplier/SupplierSettingsPage.dart.dart';
+import 'package:project3/screens/supplier/viewAllQuotation.dart';
 
 class DeliveryPage extends StatefulWidget {
-  const DeliveryPage({Key? key}) : super(key: key);
+    final String username;
+
+  const DeliveryPage({Key? key, required this.username}) : super(key: key);
 
   @override
   State<DeliveryPage> createState() => _OrdersPageState();
@@ -18,8 +29,8 @@ class _OrdersPageState extends State<DeliveryPage> {
     'PLACED': Colors.blue[100]!,
     'PROCESSING': Colors.indigo[100]!,
     'PROCESSED': Colors.cyan[100]!,
-    'SHIPPED': Colors.green[100]!,
-    'DELIVERED': Colors.orange[100]!,
+    'SHIPPED': Colors.orange[100]!,
+    'DELIVERED': Colors.green[100]!,
     'CANCELLED': Colors.red[100]!,
 
     
@@ -33,7 +44,7 @@ class _OrdersPageState extends State<DeliveryPage> {
 
   Future<void> fetchOrders() async {
     try {
-      final response = await http.get(Uri.parse('http://192.168.1.142:3000/SUPPLIER_DELIVERY'));
+      final response = await http.get(Uri.parse('http://192.168.1.143:3000/SUPPLIER_DELIVERY'));
 
       if (response.statusCode == 200) {
         
@@ -52,7 +63,15 @@ class _OrdersPageState extends State<DeliveryPage> {
 
   @override
   Widget build(BuildContext context) {
+       Color myColor = Color(0xFF1E2736);
+
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Update Order Status',
+            style: TextStyle(color: Colors.white, fontSize: 18)),
+        backgroundColor: myColor,
+        iconTheme: IconThemeData(color: Colors.white),
+      ),
    
       body: Center(
         child: orders.isEmpty
@@ -116,6 +135,76 @@ class _OrdersPageState extends State<DeliveryPage> {
                   );
                 },
               ),
+      ),
+       drawer: SupplierAppDrawer(
+        drawerColor: myColor,
+        onHomeTap: () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    SupplierNavHome(username: widget.username)),
+          );
+        },
+      onUpdateOrderTap  : () {
+          Navigator.pop(context); // Close drawer
+        },
+        onSettingsTap: () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    SupplierSettingsPage(username: widget.username)),
+          );
+        },
+        onRequestTap: () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) => Request_Tab(username: widget.username)),
+          );
+        },
+        onQuotationsTap: () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    viewAllQuotation(username: widget.username)),
+          );
+        },
+        onStartQuotTap: () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    List_of_Accepted(username: widget.username)),
+          );
+        },
+       onmakeQuotTap : () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) => EditQuotation(username: widget.username)),
+          );
+        },
+       onOrdersTap :
+        () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    OrdersPage(username: widget.username)),
+          );
+        },
+          onorderHistoryTap :
+        () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    OrderHistory(username: widget.username)),
+          );
+        },
       ),
     );
   }

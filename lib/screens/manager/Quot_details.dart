@@ -32,7 +32,7 @@ class _UnQuot_detailsState extends State<Quot_details> {
     try {
       final response = await http.get(
         Uri.parse(
-            'http://192.168.1.142:3000/get_Quot_id?procId=${widget.procId}'),
+            'http://192.168.1.143:3000/get_Quot_id?procId=${widget.procId}'),
       );
 
       if (response.statusCode == 200) {
@@ -57,7 +57,7 @@ class _UnQuot_detailsState extends State<Quot_details> {
   Future<void> fetchQuotationDetails(String quotId) async {
     try {
       final response = await http.get(
-        Uri.parse('http://192.168.1.142:3000/QUOTATION_TABLE?quotId=$quotId'),
+        Uri.parse('http://192.168.1.143:3000/QUOTATION_TABLE?quotId=$quotId'),
       );
 
       if (response.statusCode == 200) {
@@ -106,7 +106,7 @@ class _UnQuot_detailsState extends State<Quot_details> {
 Future<void> acceptquotation() async {
   try {
     final response = await http.post(
-      Uri.parse('http://192.168.1.142:3000/Approve_Quot'),
+      Uri.parse('http://192.168.1.143:3000/Approve_Quot'),
       body: json.encode({'quotId': quotId}),
       headers: {'Content-Type': 'application/json'},
     );
@@ -127,7 +127,7 @@ Future<void> acceptquotation() async {
 Future<void> rejectquotation() async {
   try {
     final response = await http.post(
-      Uri.parse('http://192.168.1.142:3000/Reject_Quot'),
+      Uri.parse('http://192.168.1.143:3000/Reject_Quot'),
       body: json.encode({'quotId': quotId}),
       headers: {'Content-Type': 'application/json'},
     );
@@ -177,6 +177,24 @@ Future<void> rejectquotation() async {
       }
     }
   }
+
+Future<void> generateQuotationPDF(String quotId) async {
+  try {
+    final response = await http.get(
+      Uri.parse('http://192.168.1.143:3000/api/generate-quotation-pdf/$quotId'),
+    );
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> responseData = json.decode(response.body);
+      print('PDF generated successfully: ${responseData['pdfPath']}');
+      // Implement logic to handle the generated PDF, such as downloading it
+    } else {
+      throw Exception('Failed to generate quotation PDF. Status Code: ${response.statusCode}');
+    }
+  } catch (error) {
+    print('Error generating quotation PDF: $error');
+  }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -315,9 +333,21 @@ Future<void> rejectquotation() async {
                           ),
                           Text('Reject quotation'),
                         ],
+                        
                       ),
                     ],
                   ),
+                  SizedBox(height: 40),
+                   SizedBox(width: 16),
+     FloatingActionButton(
+      onPressed: () {
+        // Call API to generate quotation PDF here
+        generateQuotationPDF(quotId);
+      },
+      heroTag: 'downloadButton', // Unique tag for the download FAB
+      child: Icon(Icons.download), // Download icon
+    ),
+    SizedBox(width: 16),
                 ],
               ),
             ),

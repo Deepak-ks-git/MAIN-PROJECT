@@ -7,7 +7,9 @@ import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 
 class AdminSignUp extends StatefulWidget {
-  const AdminSignUp({Key? key}) : super(key: key);
+  final String companyId;
+
+  const AdminSignUp({Key? key, required this.companyId}) : super(key: key);
 
   @override
   State<AdminSignUp> createState() => _AdminSignUpState();
@@ -32,7 +34,7 @@ class _AdminSignUpState extends State<AdminSignUp> {
 
     // Check if username already exists
     final usernameResponse = await http.get(
-      Uri.parse('http://192.168.1.142:3000/emp_id?user=$user'),
+      Uri.parse('http://192.168.1.143:3000/emp_id?user=$user'),
     );
     if (usernameResponse.statusCode == 200) {
       final Map<String, dynamic> userData = json.decode(usernameResponse.body);
@@ -48,7 +50,7 @@ class _AdminSignUpState extends State<AdminSignUp> {
 
     // Check if email already exists
     final emailResponse = await http.get(
-      Uri.parse('http://192.168.1.142:3000/emp_email?email=$mail'),
+      Uri.parse('http://192.168.1.143:3000/emp_email?email=$mail'),
     );
     if (emailResponse.statusCode == 200) {
       final Map<String, dynamic> emailData = json.decode(emailResponse.body);
@@ -64,7 +66,7 @@ class _AdminSignUpState extends State<AdminSignUp> {
 
     // Check if phone number already exists
     final phoneResponse = await http.get(
-      Uri.parse('http://192.168.1.142:3000/emp_phone?phone=$phoneno'),
+      Uri.parse('http://192.168.1.143:3000/emp_phone?phone=$phoneno'),
     );
     if (phoneResponse.statusCode == 200) {
       final Map<String, dynamic> phoneData = json.decode(phoneResponse.body);
@@ -87,7 +89,7 @@ class _AdminSignUpState extends State<AdminSignUp> {
 
     if (message == 'new user') {
       final response = await http.post(
-        Uri.parse('http://192.168.1.142:3000/admin_register'),
+        Uri.parse('http://192.168.1.143:3000/admin_register'),
         body: {
           'empid': username.text,
           'first_name': fname.text,
@@ -95,7 +97,8 @@ class _AdminSignUpState extends State<AdminSignUp> {
           'password': password1.text,
           'email': email.text,
           'phone': phone.text,
-          'type': 'admin'
+          'type': 'admin',
+          'company_id': widget.companyId
         },
       );
 
@@ -132,7 +135,7 @@ class _AdminSignUpState extends State<AdminSignUp> {
       home: Scaffold(
         body: SingleChildScrollView(
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 30),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -164,20 +167,20 @@ class _AdminSignUpState extends State<AdminSignUp> {
                   prefixIcon: Icons.person,
                   controller: username,
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: 10),
                 CustomTextField(
                   hintText: "Email",
                   prefixIcon: Icons.email,
                   controller: email,
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: 10),
                 CustomTextField(
                   hintText: "Phone No.",
                   prefixIcon: Icons.phone,
                   controller: phone,
                   obscureText: false,
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: 10),
                 Row(
                   children: [
                     Expanded(
@@ -187,7 +190,7 @@ class _AdminSignUpState extends State<AdminSignUp> {
                         controller: fname,
                       ),
                     ),
-                    const SizedBox(width: 12),
+                    const SizedBox(width: 8),
                     Expanded(
                       child: CustomTextField(
                         hintText: "Last Name",
@@ -197,14 +200,14 @@ class _AdminSignUpState extends State<AdminSignUp> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: 10),
                 CustomTextField(
                   hintText: "Password",
                   prefixIcon: Icons.password,
                   controller: password1,
                   obscureText: true,
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: 10),
                 CustomTextField(
                   hintText: "Confirm Password",
                   prefixIcon: Icons.password,
@@ -254,10 +257,9 @@ class _AdminSignUpState extends State<AdminSignUp> {
                           text: 'Admin registered',
                         );
                         await Future.delayed(Duration(seconds: 2));
-                         Navigator.pop(context);
-                          Navigator.pop(context);
+                        Navigator.pop(context);
+                        Navigator.pop(context);
                         Navigator.push(
-
                           context,
                           MaterialPageRoute(builder: (context) => LoginPage()),
                         );
@@ -270,9 +272,10 @@ class _AdminSignUpState extends State<AdminSignUp> {
                   ),
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18),
+                      borderRadius: BorderRadius.circular(10),
                     ),
-                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 10, horizontal: 20),
                     minimumSize: const Size(double.infinity, 0),
                     backgroundColor: Color.fromARGB(255, 4, 18, 67),
                   ),
@@ -308,14 +311,13 @@ class CustomTextField extends StatelessWidget {
       decoration: InputDecoration(
         hintText: hintText,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(18),
-          borderSide: BorderSide.none,
+          borderRadius: BorderRadius.circular(10),
         ),
-        fillColor: Color.fromARGB(255, 52, 86, 208).withOpacity(0.1),
+        fillColor: Colors.white,
         filled: true,
         prefixIcon: Icon(prefixIcon),
         contentPadding:
-            const EdgeInsets.symmetric(vertical: 14, horizontal: 18),
+            const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
       ),
       obscureText: obscureText,
     );

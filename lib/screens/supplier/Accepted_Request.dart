@@ -25,7 +25,7 @@ class _Accepted_RequestState extends State<Accepted_Request> {
 
   Future<void> fetchNewRequests() async {
     try {
-      final response = await http.get(Uri.parse('http://192.168.1.142:3000/Accepted_Requests?username=${widget.username}'));
+      final response = await http.get(Uri.parse('http://192.168.1.143:3000/Accepted_Requests?username=${widget.username}'));
       print('Response body: ${response.body}');
 
       if (response.statusCode == 200) {
@@ -50,7 +50,7 @@ class _Accepted_RequestState extends State<Accepted_Request> {
 
   Future<String> fetchProcurementDescription(String procId) async {
     try {
-      final response = await http.get(Uri.parse('http://192.168.1.142:3000/ProcurementDescription?procId=$procId'));
+      final response = await http.get(Uri.parse('http://192.168.1.143:3000/ProcurementDescription?procId=$procId'));
       if (response.statusCode == 200) {
         final description = json.decode(response.body)['description'];
         return description;
@@ -69,20 +69,14 @@ class _Accepted_RequestState extends State<Accepted_Request> {
 
     return Scaffold(
       body: Container(
-        color: Color.fromARGB(255, 211, 211, 240), // Background color of the body
+        color: Color.fromARGB(255, 255, 255, 255), // Background color of the body
         child: ListView.builder(
-          padding: EdgeInsets.all(8.0), // Padding for the list
           itemCount: requests.length,
           itemBuilder: (context, index) {
             final request = requests[index];
-            return Padding(
-              padding: EdgeInsets.symmetric(vertical: 3.0),
-              child: Card(
-                elevation: 2, // Add elevation for a raised effect
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30.0),
-                ),
-                child: GestureDetector(
+            return Column(
+              children: [
+                ListTile(
                   onTap: () {
                     Navigator.push(
                       context,
@@ -91,32 +85,40 @@ class _Accepted_RequestState extends State<Accepted_Request> {
                       ),
                     );
                   },
-                  child: ListTile(
-                    tileColor: Colors.grey[200], // Background color of the ListTile
-                    title: FutureBuilder(
-                      future: fetchProcurementDescription(request['procId']),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.waiting) {
-                          return Center(child: CircularProgressIndicator());
-                        } else if (snapshot.hasError) {
-                          return Text('Error loading description');
-                        } else {
-                          final description = snapshot.data.toString();
-                          return Text(
-                            description,
-                            style: TextStyle(fontSize: 14), // Reduce text size
-                          );
-                        }
-                      },
-                    ),
-                    subtitle: Text(
-                      'Date of Request: ${DateFormat.yMMMMd().add_jm().format(request['dateOfRequest'])}', // Format the date and time
-                      style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-                      // Reduce text size
-                    ),
+                  tileColor: const Color.fromARGB(255, 255, 255, 255), // Background color of the ListTile
+                  title: FutureBuilder<String>(
+                    future: fetchProcurementDescription(request['procId']),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(child: CircularProgressIndicator());
+                      } else if (snapshot.hasError) {
+                        return Text('Error loading description');
+                      } else {
+                        final description = snapshot.data ?? 'No description available';
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              description,
+                              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold), // Reduce text size
+                            ),
+                            Text(
+                              'REQUEST ID: ${request['purchaseReqId']}',
+                              style: TextStyle(fontSize: 12,), // Reduce text size
+                            ),
+                            Text(
+                              'Date of Request: ${DateFormat.yMMMMd().add_jm().format(request['dateOfRequest'])}', // Format the date and time
+                              style: TextStyle(fontSize: 12, ),
+                              // Reduce text size
+                            ),
+                          ],
+                        );
+                      }
+                    },
                   ),
                 ),
-              ),
+                Divider(), // Divider to separate each request
+              ],
             );
           },
         ),

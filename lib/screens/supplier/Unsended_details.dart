@@ -30,7 +30,7 @@ class _UnsendedDetailsState extends State<UnsendedDetails> {
   Future<void> fetchData() async {
     try {
       final response = await http.get(
-        Uri.parse('http://192.168.1.142:3000/get_Quot_id?procId=${widget.procId}'),
+        Uri.parse('http://192.168.1.143:3000/get_Quot_id?procId=${widget.procId}'),
       );
 
       if (response.statusCode == 200) {
@@ -54,7 +54,7 @@ class _UnsendedDetailsState extends State<UnsendedDetails> {
   Future<void> fetchQuotationDetails(String quotId) async {
     try {
       final response = await http.get(
-        Uri.parse('http://192.168.1.142:3000/QUOTATION_TABLE?quotId=$quotId'),
+        Uri.parse('http://192.168.1.143:3000/QUOTATION_TABLE?quotId=$quotId'),
       );
 
       if (response.statusCode == 200) {
@@ -101,7 +101,7 @@ class _UnsendedDetailsState extends State<UnsendedDetails> {
  Future<void> deleteQuotation(String quotId) async {
     try {
       final response = await http.post(
-        Uri.parse('http://192.168.1.142:3000/cancel_quotation'),
+        Uri.parse('http://192.168.1.143:3000/cancel_quotation'),
         body: {'quotId': quotId},
       );
 
@@ -117,6 +117,25 @@ class _UnsendedDetailsState extends State<UnsendedDetails> {
       print('Error cancelling quotation: $error');
     }
   }
+
+Future<void> generateQuotationPDF(String quotId) async {
+  try {
+    final response = await http.get(
+      Uri.parse('http://192.168.1.143:3000/api/generate-quotation-pdf/$quotId'),
+    );
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> responseData = json.decode(response.body);
+      print('PDF generated successfully: ${responseData['pdfPath']}');
+      // Implement logic to handle the generated PDF, such as downloading it
+    } else {
+      throw Exception('Failed to generate quotation PDF. Status Code: ${response.statusCode}');
+    }
+  } catch (error) {
+    print('Error generating quotation PDF: $error');
+  }
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -238,7 +257,16 @@ class _UnsendedDetailsState extends State<UnsendedDetails> {
       heroTag: 'editButton', // Unique tag for the edit FAB
       child: Icon(Icons.edit_outlined), // Edit icon
     ),
-    SizedBox(width: 16), // Spacing between FABs
+    SizedBox(width: 16),
+     FloatingActionButton(
+      onPressed: () {
+        // Call API to generate quotation PDF here
+        generateQuotationPDF(quotId);
+      },
+      heroTag: 'downloadButton', // Unique tag for the download FAB
+      child: Icon(Icons.download), // Download icon
+    ),
+    SizedBox(width: 16),  // Spacing between FABs
   FloatingActionButton(
             onPressed: () {
               // Implement delete functionality here

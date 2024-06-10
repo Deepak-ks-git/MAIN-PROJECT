@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:project3/screens/Admin/AddProcurement.dart';
+import 'package:project3/screens/Admin/Admin_Homepage.dart';
+import 'package:project3/screens/Admin/COMPLETED_PROC.dart';
+import 'package:project3/screens/Admin/ReportPage.dart';
 import 'package:project3/screens/Admin/TAB_NEW.dart';
 import 'package:project3/screens/Admin/TAB_ONGOING.dart';
-import 'package:project3/screens/manager/BlacklistedSuppliers.dart';
+import 'package:project3/screens/Admin/ViewItems.dart';
+import 'package:project3/screens/Admin/ViewProcurements.dart';
+import 'package:project3/screens/Admin/app_drawer.dart';
+import 'package:project3/screens/Admin/settings_page.dart';
 import 'package:project3/screens/manager/Tab_Items.dart';
 
 
@@ -10,14 +17,15 @@ class ALL_proc extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+        Color myColor = Color(0xFF1E2736);
+
     return DefaultTabController(
       length: 3,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text(
-            ' Procurements',
-            style: TextStyle(fontSize: 16),
-          ),
+           title: Text('Report', style: TextStyle(color: Colors.white)),
+        backgroundColor: myColor,
+        iconTheme: IconThemeData(color: Colors.white),
           centerTitle: true,
           bottom: PreferredSize(
             preferredSize: const Size.fromHeight(40),
@@ -56,9 +64,60 @@ class ALL_proc extends StatelessWidget {
           children: [
             Center(child: TAB_NEW()),
             Center(child: TAB_ONGOING()),
-            Center(child: BlacklistedSuppliers()),
+            Center(child: COMPLETED_PROC()),
           ],
         ),
+                    drawer: AppDrawer(
+        drawerColor: myColor,
+        onHomeTap: () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => NavHomePage()),
+          );
+        },
+        onSettingsTap: () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => SettingsPage()),
+          );
+        },
+       onProcurementsTap : () {
+          Navigator.pop(context); // Close drawer if already on Report page
+        },
+       onReportTap : () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ReportPage()),
+          );
+        },
+         onItemTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ViewItems()),
+          );
+        },
+         onAddItemTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ALL_proc()),
+          );
+        },
+         onAddProcurementTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => AddProcurement()),
+          );
+        },
+         onStartProcTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ViewProcurements()),
+          );
+        },
+   
+      ),
+            
+    
       ),
     );
   }

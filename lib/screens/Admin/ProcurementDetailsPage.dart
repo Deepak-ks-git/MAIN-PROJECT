@@ -30,7 +30,7 @@ class _ProcurementDetailsPageState extends State<ProcurementDetailsPage> {
   }
 
   Future<void> fetchProcurements() async {
-    final response = await http.get(Uri.parse('http://192.168.1.142:3000/getProc?procId=${widget.procId}'));
+    final response = await http.get(Uri.parse('http://192.168.1.143:3000/getProc?procId=${widget.procId}'));
     if (response.statusCode == 200) {
       final List<dynamic> data = json.decode(response.body);
       setState(() {
@@ -46,7 +46,7 @@ class _ProcurementDetailsPageState extends State<ProcurementDetailsPage> {
   }
 
   Future<void> fetchActiveItems() async {
-    final response = await http.get(Uri.parse('http://192.168.1.142:3000/getActiveItems'));
+    final response = await http.get(Uri.parse('http://192.168.1.143:3000/getActiveItems'));
     if (response.statusCode == 200) {
       final List<dynamic> data = json.decode(response.body);
       setState(() {
@@ -59,7 +59,7 @@ class _ProcurementDetailsPageState extends State<ProcurementDetailsPage> {
   }
 
   Future<void> fetchProcurementDetails(String procId) async {
-    final response = await http.get(Uri.parse('http://192.168.1.142:3000/ProcureItemDetails?procId=$procId'));
+    final response = await http.get(Uri.parse('http://192.168.1.143:3000/ProcureItemDetails?procId=$procId'));
     if (response.statusCode == 200) {
       final List<dynamic> data = json.decode(response.body);
       setState(() {
@@ -99,7 +99,7 @@ class _ProcurementDetailsPageState extends State<ProcurementDetailsPage> {
 
   void addItemToProcurement() async {
     if (selectedItem.isNotEmpty && quantity > 0) {
-      final url = Uri.parse('http://192.168.1.142:3000/addItemToProcurement');
+      final url = Uri.parse('http://192.168.1.143:3000/addItemToProcurement');
       final response = await http.post(url, body: {
         'procId': widget.procId,
         'itemId': activeItems.firstWhere((item) => item['itemName'] == selectedItem)['itemId'],
@@ -123,7 +123,7 @@ class _ProcurementDetailsPageState extends State<ProcurementDetailsPage> {
   }
 
   void deleteItemFromProcurement(String itemId) async {
-    final url = Uri.parse('http://192.168.1.142:3000/deleteItemFromProcurement');
+    final url = Uri.parse('http://192.168.1.143:3000/deleteItemFromProcurement');
     final response = await http.post(url, body: {
       'procId': widget.procId,
       'itemId': itemId,
@@ -144,7 +144,7 @@ class _ProcurementDetailsPageState extends State<ProcurementDetailsPage> {
   void startProcurement() async {
     if (procureItemDetails.isNotEmpty) {
       // Call the API to start procurement
-      final url = Uri.parse('http://192.168.1.142:3000/startProc');
+      final url = Uri.parse('http://192.168.1.143:3000/startProc');
       final response = await http.post(url, body: {'procId': widget.procId});
       
       if (response.statusCode == 200) {

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:project3/screens/manager/ManHomeNav.dart';
-import 'package:project3/screens/manager/Man_Settings_nav.dart';
 
 
 class ManagerHome extends StatefulWidget {
@@ -16,8 +15,7 @@ class _ManagerHomeState extends State<ManagerHome> {
 
   static  List<Widget> _widgetOptions = <Widget>[
     ManHomeNav(),
-    Man_settings_nav(),
-
+  
   ];
 
   void _onItemTapped(int index) {

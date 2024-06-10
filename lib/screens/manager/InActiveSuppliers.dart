@@ -21,7 +21,7 @@ class _InActiveSuppliersState extends State<InActiveSuppliers> {
 
   Future<List<List<String>>> fetchInActiveSuppliers() async {
     final response =
-        await http.get(Uri.parse('http://192.168.1.142:3000/Inactive_suppliers'));
+        await http.get(Uri.parse('http://192.168.1.143:3000/Inactive_suppliers'));
 
     if (response.statusCode == 200) {
       List<dynamic> data = jsonDecode(response.body);

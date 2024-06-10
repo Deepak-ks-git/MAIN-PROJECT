@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:project3/screens/Admin/ViewItems.dart';
@@ -33,7 +34,7 @@ class _EditItemPageState extends State<EditItemPage> {
 
 Future<void> EditItem() async {
   final response = await http.post(
-    Uri.parse('http://192.168.1.142:3000/EditItem'),
+    Uri.parse('http://192.168.1.143:3000/EditItem'),
     body: {
     
       'name': _nameController.text,
@@ -137,6 +138,9 @@ Future<void> EditItem() async {
                         title: 'Success',
                         text: 'Item Updated',
                       );
+
+                      await Future.delayed(Duration(seconds: 2));
+                       Navigator.pop(context);
                       
                    
                     }

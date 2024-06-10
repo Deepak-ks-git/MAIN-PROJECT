@@ -1,14 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:project3/screens/manager/ActiveSuppliers.dart';
+import 'package:project3/screens/manager/AppDrawerMan.dart';
 import 'package:project3/screens/manager/BlacklistedSuppliers.dart';
+import 'package:project3/screens/manager/Dash_MANAGER.dart';
 import 'package:project3/screens/manager/InActiveSuppliers.dart';
+import 'package:project3/screens/manager/Man_TAB_Procurements.dart';
+import 'package:project3/screens/manager/New_Orders.dart';
+import 'package:project3/screens/manager/PlaceOrders.dart';
+import 'package:project3/screens/manager/Quotations.dart';
+import 'package:project3/screens/manager/ReportPage.dart';
+import 'package:project3/screens/manager/SettingsPage.dart';
+import 'package:project3/screens/manager/Stock.dart';
 import 'package:project3/screens/manager/Tab_Items.dart';
+import 'package:project3/screens/manager/VerifyOrders.dart';
 
 class Man_Supplier extends StatelessWidget {
   const Man_Supplier({super.key});
 
   @override
   Widget build(BuildContext context) {
+        Color myColor = Color(0xFF1E2736);
+
     return DefaultTabController(
       length: 3,
       child: Scaffold(
@@ -58,6 +70,74 @@ class Man_Supplier extends StatelessWidget {
             Center(child: BlacklistedSuppliers()),
           ],
         ),
+         drawer: AppDrawerMan(
+        drawerColor: myColor,
+        onHomeTap: () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => Dash_MANAGER()),
+          );
+        },
+        onSettingsTap: () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => SettingsPage()),
+          );
+        },
+        onReportTap: () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => ReportPage()),
+          );; // Close drawer if already on Report page
+        },
+        onSupplierstTap: () {
+          Navigator.pop(context); // Close drawer if already on Report page
+        },
+         onStockTap: () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => Stock()),
+          );
+        },
+          onAddStocktTap: () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => Man_Supplier()),
+          );
+        },
+         onOrdersTap: () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => New_Orders()),
+          );
+        },
+        onPlaceOrdersTap: () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => PlaceOrders()),
+          );
+        },
+        onVerifyOrdersTap: () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => VerifyOrders()),
+          );
+        },
+          onQuotationsTap: () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => Quotations()),
+          );
+        },
+         onProcurementTap:() {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => Man_TAB_Procurements()),
+          );
+        },
+      ),
+      
+    
       ),
     );
   }

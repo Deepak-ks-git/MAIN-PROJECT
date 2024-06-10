@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:project3/SupplierHome.dart';
+import 'package:project3/screens/supplier/SupplierNavHome.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 
@@ -58,7 +58,7 @@ class _EditSupplierInfoState extends State<EditSupplierInfo> {
 
   Future<void> editSupplierDetails() async {
     final response = await http.post(
-      Uri.parse('http://192.168.1.142:3000/EditSupplierDetails'),
+      Uri.parse('http://192.168.1.143:3000/EditSupplierDetails'),
       body: {
         'username': widget
             .supplierDetails[0], // Assuming supplier_id is passed as username
@@ -148,7 +148,7 @@ class _EditSupplierInfoState extends State<EditSupplierInfo> {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => SupplierHome(
+                              builder: (context) => SupplierNavHome(
                                   username: widget.supplierDetails[0]),
                             ),
                           );

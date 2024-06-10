@@ -1,9 +1,10 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:project3/HomeScreen.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
-import 'package:http/http.dart' as http;
 
 class Signup_2 extends StatefulWidget {
   final String username;
@@ -50,7 +51,7 @@ class _Signup_2State extends State<Signup_2> {
     final String phone = widget.phone;
 
     final response = await http.post(
-      Uri.parse('http://192.168.1.142:3000/s_register'),
+      Uri.parse('http://192.168.1.143:3000/s_register'),
       body: {
         'supplier_id': supplier_id,
         'password': password,
@@ -64,7 +65,8 @@ class _Signup_2State extends State<Signup_2> {
         'address2': address2,
         'address3': address3,
         'gst_number': gst_number,
-        'status':'Active'
+        'status':'Active',
+        'blacklisted':'NO'
       },
     );
 
@@ -115,7 +117,7 @@ class _Signup_2State extends State<Signup_2> {
       ),
       body: SingleChildScrollView(
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 30),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -162,47 +164,47 @@ class _Signup_2State extends State<Signup_2> {
                   ),
                 ],
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 10),
               CustomTextField(
                 hintText: "Company name",
                 prefixIcon: Icons.business_center,
                 controller: cname,
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 10),
               CustomTextField(
                 hintText: "Address 1",
                 prefixIcon: Icons.place,
                 controller: add1,
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 10),
               CustomTextField(
                 hintText: "Address 2",
                 prefixIcon: Icons.place,
                 controller: add2,
                 obscureText: false,
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 10),
               CustomTextField(
                 hintText: "Address 3",
                 prefixIcon: Icons.place,
                 controller: add3,
-                obscureText: true,
+                obscureText: false,
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 10),
               CustomTextField(
                 hintText: "GST Number",
                 prefixIcon: Icons.numbers_sharp,
                 controller: gst,
-                obscureText: true,
+                obscureText: false,
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 10),
               CustomTextField(
                 hintText: "Alternate Phone no",
                 prefixIcon: Icons.phone,
                 controller: phone2,
-                obscureText: true,
+                obscureText: false,
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 10),
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () async {
@@ -229,9 +231,9 @@ class _Signup_2State extends State<Signup_2> {
                 ),
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(18),
+                    borderRadius: BorderRadius.circular(10),
                   ),
-                  padding: const EdgeInsets.symmetric(vertical: 14),
+                  padding: const EdgeInsets.symmetric(vertical: 10),
                   minimumSize: const Size(double.infinity, 0),
                   backgroundColor: Color.fromARGB(255, 4, 18, 67),
                 ),
@@ -267,14 +269,13 @@ class CustomTextField extends StatelessWidget {
       decoration: InputDecoration(
         hintText: hintText,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(18),
-          borderSide: BorderSide.none,
+          borderRadius: BorderRadius.circular(10),
         ),
-        fillColor: Color.fromARGB(255, 52, 86, 208).withOpacity(0.1),
+        fillColor: Color.fromARGB(255, 255, 255, 255),
         filled: true,
         prefixIcon: Icon(prefixIcon),
         contentPadding:
-            const EdgeInsets.symmetric(vertical: 14, horizontal: 18),
+            const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
       ),
       obscureText: obscureText,
     );

@@ -35,7 +35,7 @@ class _AdminSignUpState extends State<AddManagersScreen> {
 
     // Check if username already exists
     final usernameResponse = await http.get(
-      Uri.parse('http://192.168.1.142:3000/emp_id?user=$user'),
+      Uri.parse('http://192.168.1.143:3000/emp_id?user=$user'),
     );
     if (usernameResponse.statusCode == 200) {
       final Map<String, dynamic> userData = json.decode(usernameResponse.body);
@@ -51,7 +51,7 @@ class _AdminSignUpState extends State<AddManagersScreen> {
 
     // Check if email already exists
     final emailResponse = await http.get(
-      Uri.parse('http://192.168.1.142:3000/emp_email?email=$mail'),
+      Uri.parse('http://192.168.1.143:3000/emp_email?email=$mail'),
     );
     if (emailResponse.statusCode == 200) {
       final Map<String, dynamic> emailData = json.decode(emailResponse.body);
@@ -67,7 +67,7 @@ class _AdminSignUpState extends State<AddManagersScreen> {
 
     // Check if phone number already exists
     final phoneResponse = await http.get(
-      Uri.parse('http://192.168.1.142:3000/emp_phone?phone=$phoneno'),
+      Uri.parse('http://192.168.1.143:3000/emp_phone?phone=$phoneno'),
     );
     if (phoneResponse.statusCode == 200) {
       final Map<String, dynamic> phoneData = json.decode(phoneResponse.body);
@@ -90,7 +90,7 @@ class _AdminSignUpState extends State<AddManagersScreen> {
 
     if (message == 'new user') {
       final response = await http.post(
-        Uri.parse('http://192.168.1.142:3000/emp_register'),
+        Uri.parse('http://192.168.1.143:3000/emp_register'),
         body: {
           'empid': username.text,
           'first_name': fname.text,
@@ -175,6 +175,20 @@ class _AdminSignUpState extends State<AddManagersScreen> {
       type: QuickAlertType.error,
       text: message,
     );
+  }
+
+  bool isEmailValid(String email) {
+    final emailRegExp = RegExp(
+      r'^[^@]+@[^@]+\.[^@]+',
+    );
+    return emailRegExp.hasMatch(email);
+  }
+
+  bool isPhoneValid(String phone) {
+    final phoneRegExp = RegExp(
+      r'^\d+$',
+    );
+    return phoneRegExp.hasMatch(phone);
   }
 
   @override
@@ -278,6 +292,18 @@ class _AdminSignUpState extends State<AddManagersScreen> {
                         type: QuickAlertType.warning,
                         text: 'All fields are required',
                       );
+                    } else if (!isEmailValid(email.text)) {
+                      QuickAlert.show(
+                        context: context,
+                        type: QuickAlertType.error,
+                        text: 'Invalid email format',
+                      );
+                    } else if (!isPhoneValid(phone.text)) {
+                      QuickAlert.show(
+                        context: context,
+                        type: QuickAlertType.error,
+                        text: 'Phone number must be numeric',
+                      );
                     } else if (password1.text != password2.text) {
                       QuickAlert.show(
                         context: context,
@@ -303,12 +329,12 @@ class _AdminSignUpState extends State<AddManagersScreen> {
                     }
                   },
                   child: const Text(
-                    "Register Admin",
+                    "Add User",
                     style: TextStyle(fontSize: 16, color: Colors.white),
                   ),
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18),
+                      borderRadius: BorderRadius.circular(10),
                     ),
                     padding: const EdgeInsets.symmetric(vertical: 14),
                     minimumSize: const Size(double.infinity, 0),
@@ -366,14 +392,13 @@ class CustomTextField extends StatelessWidget {
       decoration: InputDecoration(
         hintText: hintText,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(18),
-          borderSide: BorderSide.none,
+          borderRadius: BorderRadius.circular(10),
         ),
-        fillColor: Color.fromARGB(255, 52, 86, 208).withOpacity(0.1),
+        fillColor: Colors.white,
         filled: true,
         prefixIcon: Icon(prefixIcon),
         contentPadding:
-            const EdgeInsets.symmetric(vertical: 14, horizontal: 18),
+            const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
       ),
       obscureText: obscureText,
     );

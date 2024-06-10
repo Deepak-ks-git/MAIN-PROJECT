@@ -19,6 +19,8 @@ class _New_Procuremnt_NavState extends State<New_Procuremnt_Nav> {
 
   @override
   Widget build(BuildContext context) {
+        Color myColor = Color(0xFF1E2736);
+
     return Scaffold(
       backgroundColor: Colors.white,
       
@@ -42,11 +44,11 @@ class _New_Procuremnt_NavState extends State<New_Procuremnt_Nav> {
               rippleColor: Colors.grey[300]!,
               hoverColor: Color.fromARGB(255, 8, 12, 118),
               gap: 8,
-              activeColor: Colors.black,
+              activeColor: const Color.fromARGB(255, 255, 255, 255),
               iconSize: 24,
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
               duration: Duration(milliseconds: 400),
-              tabBackgroundColor: Color.fromARGB(255, 210, 208, 238),
+              tabBackgroundColor:myColor,
               color: Colors.black,
               tabs: [
                 GButton(

@@ -33,7 +33,7 @@ class _EditQuotDetailsState extends State<Edit_Quot_details> {
 Future<void> fetchQuotationId() async {
   try {
     final response = await http.get(Uri.parse(
-        'http://192.168.1.142:3000/get_Quot_id?procId=${widget.procId}'));
+        'http://192.168.1.143:3000/get_Quot_id?procId=${widget.procId}'));
 
     if (response.statusCode == 200) {
       final List<dynamic> data = json.decode(response.body);
@@ -53,7 +53,7 @@ Future<void> fetchQuotationId() async {
   Future<void> fetchEditQuotDetails() async {
     try {
       final response = await http.get(Uri.parse(
-          'http://192.168.1.142:3000/Item_Reqeust_details?procId=${widget.procId}'));
+          'http://192.168.1.143:3000/Item_Reqeust_details?procId=${widget.procId}'));
 
       if (response.statusCode == 200) {
         final List<dynamic> data = json.decode(response.body);
@@ -378,7 +378,7 @@ Future<void> fetchQuotationId() async {
 
     try {
       final response = await http.post(
-        Uri.parse('http://192.168.1.142:3000/update_quotation_detail'),
+        Uri.parse('http://192.168.1.143:3000/update_quotation_detail'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -389,6 +389,11 @@ Future<void> fetchQuotationId() async {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Quotation details updated successfully')),
         );
+        await Future.delayed(Duration(seconds: 2));
+
+        Navigator.of(context).pop();
+        
+
       } else {
         throw Exception('Failed to update quotation details');
       }

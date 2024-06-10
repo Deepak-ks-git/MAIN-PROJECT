@@ -2,7 +2,14 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:project3/screens/Admin/ALL_proc.dart';
+import 'package:project3/screens/Admin/AddProcurement.dart';
+import 'package:project3/screens/Admin/Admin_Homepage.dart';
+import 'package:project3/screens/Admin/ReportPage.dart';
 import 'package:project3/screens/Admin/ViewItems.dart';
+import 'package:project3/screens/Admin/ViewProcurements.dart';
+import 'package:project3/screens/Admin/app_drawer.dart';
+import 'package:project3/screens/Admin/settings_page.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 
@@ -22,7 +29,7 @@ class _AddItemScreenState extends State<AddItemScreen> {
 
   Future<void> addItem() async {
     final response = await http.post(
-      Uri.parse('http://192.168.1.142:3000/add_item'),
+      Uri.parse('http://192.168.1.143:3000/add_item'),
       body: {
         'name': pname.text,
         'color': color.text,
@@ -45,8 +52,14 @@ class _AddItemScreenState extends State<AddItemScreen> {
 
   @override
   Widget build(BuildContext context) {
+     Color myColor = Color(0xFF1E2736);
+
     return Scaffold(
-      appBar: AppBar(title: const Text('Add new item')),
+      appBar: AppBar(
+        title: Text('Add Item', style: TextStyle(color: Colors.white)),
+        backgroundColor: myColor,
+        iconTheme: IconThemeData(color: Colors.white), // Set the icon theme to white
+      ),
       body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -147,6 +160,56 @@ class _AddItemScreenState extends State<AddItemScreen> {
           ),
         ),
       ),
+            drawer: AppDrawer(
+        drawerColor: myColor,
+        onHomeTap: () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => NavHomePage()),
+          );
+        },
+        onSettingsTap: () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => SettingsPage()),
+          );
+        },
+       onAddItemTap : () {
+          Navigator.pop(context); // Close drawer if already on Report page
+        },
+       onReportTap : () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ReportPage()),
+          );
+        },
+         onItemTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ViewItems()),
+          );
+        },
+         onProcurementsTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ALL_proc()),
+          );
+        },
+         onAddProcurementTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => AddProcurement()),
+          );
+        },
+         onStartProcTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ViewProcurements()),
+          );
+        },
+   
+      ),
+   
     );
   }
 }

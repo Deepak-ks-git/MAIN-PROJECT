@@ -1,24 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:project3/screens/Admin/ALL_proc.dart';
+import 'package:project3/screens/Admin/AddItemScreen.dart';
+import 'package:project3/screens/Admin/AddProcurement.dart';
 import 'package:project3/screens/Admin/Admin_Homepage.dart';
 import 'package:project3/screens/Admin/Company_Profile.dart';
+import 'package:project3/screens/Admin/ReportPage.dart'; // Import the report page
+import 'package:project3/screens/Admin/ViewItems.dart';
+import 'package:project3/screens/Admin/ViewProcurements.dart';
+import 'package:project3/screens/Admin/add_managers_screen.dart';
 import 'package:project3/screens/Admin/app_drawer.dart';
 
 class SettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    Color myColor = Color(0xFF1C2951);
+    Color myColor = Color(0xFF1E2736);
+
     void logoutUser(BuildContext context) async {
       try {
         // Call your API to logout
         final response =
-            await http.post(Uri.parse('http://192.168.1.142:3000/logout'));
+            await http.post(Uri.parse('http://192.168.1.143:3000/logout'));
 
         if (response.statusCode == 200) {
           // Logout was successful, navigate to the HomeScreen
           Navigator.pushNamedAndRemoveUntil(
             context,
-            '/home',
+            '/splash',
             (route) => false, // Remove all routes
           );
         } else {
@@ -108,13 +116,16 @@ class SettingsPage extends StatelessWidget {
             leading: Icon(Icons.business, color: Colors.grey[700]),
             title: Text('Company Profile'),
             onTap: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context)=>CompanyProfile()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => CompanyProfile()));
             },
           ),
           ListTile(
             leading: Icon(Icons.people, color: Colors.grey[700]),
-            title: Text('Users'),
+            title: Text('Add Users'),
             onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => AddManagersScreen()));
               // Navigate to users page
               // Implement navigation logic here
             },
@@ -133,6 +144,42 @@ class SettingsPage extends StatelessWidget {
         onSettingsTap: () {
           Navigator.pop(context); // Close drawer
           // Implement any additional logic needed when Settings is tapped
+        },
+        onReportTap: () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => ReportPage()),
+          );
+        },
+        onItemTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ViewItems()),
+          );
+        },
+        onAddItemTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => AddItemScreen()),
+          );
+        },
+        onProcurementsTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ALL_proc()),
+          );
+        },
+        onAddProcurementTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => AddProcurement()),
+          );
+        },
+        onStartProcTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ViewProcurements()),
+          );
         },
       ),
     );

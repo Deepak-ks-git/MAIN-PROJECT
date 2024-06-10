@@ -7,7 +7,6 @@ import 'package:project3/SupplierLogin.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 
-
 class SignupPage extends StatefulWidget {
   const SignupPage({Key? key}) : super(key: key);
 
@@ -29,68 +28,73 @@ class _SignupPageState extends State<SignupPage> {
     final String mail = email.text;
     final String phoneno = phone.text;
 
-    final usernameResponse = await http.get(
-      Uri.parse('http://192.168.1.142:3000/s_id?user=$user'),
-    );
-    if (usernameResponse.statusCode == 200) {
-      final Map<String, dynamic> userData = json.decode(usernameResponse.body);
-      final String usernameMessage = userData['message'];
-      if (usernameMessage == 'existing user') {
-        showQuickAlert(context, 'Username already exists.');
-        return;
-      }
-      if (usernameMessage == 'new user') {
-        message = 'new user';
-      }
-    }
-
-    final emailResponse = await http.get(
-      Uri.parse('http://192.168.1.142:3000/s_email?email=$mail'),
-    );
-    if (emailResponse.statusCode == 200) {
-      final Map<String, dynamic> emailData = json.decode(emailResponse.body);
-      final String emailMessage = emailData['message'];
-      if (emailMessage == 'existing user') {
-        showQuickAlert(context, 'Email already exists.');
-        return;
-      }
-      if (emailMessage == 'new user') {
-        message = 'new user';
-      }
-    }
-
-    final phoneResponse = await http.get(
-      Uri.parse('http://192.168.1.142:3000/s_phone?phone=$phoneno'),
-    );
-    if (phoneResponse.statusCode == 200) {
-      final Map<String, dynamic> phoneData = json.decode(phoneResponse.body);
-      final String phoneMessage = phoneData['message'];
-      if (phoneMessage == 'existing user') {
-        showQuickAlert(context, 'Phone number already exists.');
-        return;
-      }
-      if (phoneMessage == 'new user') {
-        message = 'new user';
-      }
-    }
-
-    if (password1.text != password2.text) {
-      showQuickAlert(context, 'Passwords are not matching');
-      return;
-    }
-
-    if (message == 'new user') {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => Signup_2(
-            username: username.text,
-            email: email.text,
-            phone: phone.text,
-            password: password1.text,
-          ),
-        ),
+    try {
+      final usernameResponse = await http.get(
+        Uri.parse('http://192.168.1.143:3000/s_id?user=$user'),
       );
+      if (usernameResponse.statusCode == 200) {
+        final Map<String, dynamic> userData = json.decode(usernameResponse.body);
+        final String usernameMessage = userData['message'];
+        if (usernameMessage == 'existing user') {
+          showQuickAlert(context, 'Username already exists.');
+          return;
+        }
+        if (usernameMessage == 'new user') {
+          message = 'new user';
+        }
+      }
+
+      final emailResponse = await http.get(
+        Uri.parse('http://192.168.1.143:3000/s_email?email=$mail'),
+      );
+      if (emailResponse.statusCode == 200) {
+        final Map<String, dynamic> emailData = json.decode(emailResponse.body);
+        final String emailMessage = emailData['message'];
+        if (emailMessage == 'existing user') {
+          showQuickAlert(context, 'Email already exists.');
+          return;
+        }
+        if (emailMessage == 'new user') {
+          message = 'new user';
+        }
+      }
+
+      final phoneResponse = await http.get(
+        Uri.parse('http://192.168.1.143:3000/s_phone?phone=$phoneno'),
+      );
+      if (phoneResponse.statusCode == 200) {
+        final Map<String, dynamic> phoneData = json.decode(phoneResponse.body);
+        final String phoneMessage = phoneData['message'];
+        if (phoneMessage == 'existing user') {
+          showQuickAlert(context, 'Phone number already exists.');
+          return;
+        }
+        if (phoneMessage == 'new user') {
+          message = 'new user';
+        }
+      }
+
+      if (password1.text != password2.text) {
+        showQuickAlert(context, 'Passwords are not matching');
+        return;
+      }
+
+      if (message == 'new user') {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Signup_2(
+              username: username.text,
+              email: email.text,
+              phone: phone.text,
+              password: password1.text,
+            ),
+          ),
+        );
+      }
+    } catch (e) {
+      debugPrint('Error during sign up: $e');
+      showQuickAlert(context, 'An error occurred. Please try again.');
     }
   }
 
@@ -102,6 +106,20 @@ class _SignupPageState extends State<SignupPage> {
     );
   }
 
+  bool isEmailValid(String email) {
+    final emailRegExp = RegExp(
+      r'^[^@]+@[^@]+\.[^@]+',
+    );
+    return emailRegExp.hasMatch(email);
+  }
+
+  bool isPhoneValid(String phone) {
+    final phoneRegExp = RegExp(
+      r'^\d{10}$',
+    );
+    return phoneRegExp.hasMatch(phone);
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -109,7 +127,7 @@ class _SignupPageState extends State<SignupPage> {
       home: Scaffold(
         body: SingleChildScrollView(
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 40),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -135,40 +153,40 @@ class _SignupPageState extends State<SignupPage> {
                   style: TextStyle(fontSize: 14, color: Colors.grey[700]),
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 40),
+                const SizedBox(height: 20),
                 CustomTextField(
                   hintText: "Username",
                   prefixIcon: Icons.person,
                   controller: username,
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: 10,),
                 CustomTextField(
                   hintText: "Email",
                   prefixIcon: Icons.email,
                   controller: email,
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: 10,),
                 CustomTextField(
                   hintText: "Phone No.",
                   prefixIcon: Icons.phone,
                   controller: phone,
                   obscureText: false,
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: 10,),
                 CustomTextField(
                   hintText: "Password",
                   prefixIcon: Icons.lock,
                   controller: password1,
                   obscureText: true,
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: 10,),
                 CustomTextField(
                   hintText: "Confirm Password",
                   prefixIcon: Icons.lock,
                   controller: password2,
                   obscureText: true,
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: 10,),
                 const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () async {
@@ -181,6 +199,18 @@ class _SignupPageState extends State<SignupPage> {
                         context: context,
                         type: QuickAlertType.warning,
                         text: 'All fields are required',
+                      );
+                    } else if (!isEmailValid(email.text)) {
+                      QuickAlert.show(
+                        context: context,
+                        type: QuickAlertType.error,
+                        text: 'Invalid email format',
+                      );
+                    } else if (!isPhoneValid(phone.text)) {
+                      QuickAlert.show(
+                        context: context,
+                        type: QuickAlertType.error,
+                        text: 'Phone number must be 10 digits',
                       );
                     } else if (password1.text != password2.text) {
                       QuickAlert.show(
@@ -198,16 +228,16 @@ class _SignupPageState extends State<SignupPage> {
                   ),
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18),
+                      borderRadius: BorderRadius.circular(10),
                     ),
                     padding: const EdgeInsets.symmetric(vertical: 14),
                     minimumSize: const Size(double.infinity, 0),
                     backgroundColor: Color.fromARGB(255, 4, 18, 67),
                   ),
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: 10,),
                 const Text("Or", textAlign: TextAlign.center),
-                const SizedBox(height: 12),
+                const SizedBox(height: 10,),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
@@ -216,7 +246,8 @@ class _SignupPageState extends State<SignupPage> {
                       onPressed: () {
                         Navigator.pushReplacement(
                           context,
-                          MaterialPageRoute(builder: (context) => SupplierLogin()),
+                          MaterialPageRoute(
+                              builder: (context) => SupplierLogin()),
                         );
                       },
                       child: const Text(
@@ -255,15 +286,15 @@ class CustomTextField extends StatelessWidget {
       controller: controller,
       decoration: InputDecoration(
         hintText: hintText,
+        hintStyle: TextStyle(fontSize: 14),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(18),
-          borderSide: BorderSide.none,
+          borderRadius: BorderRadius.circular(8),
         ),
-        fillColor: Color.fromARGB(255, 52, 86, 208).withOpacity(0.1),
+        fillColor: Color.fromARGB(255, 255, 255, 255),
         filled: true,
         prefixIcon: Icon(prefixIcon),
         contentPadding:
-            const EdgeInsets.symmetric(vertical: 14, horizontal: 18),
+            const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
       ),
       obscureText: obscureText,
     );
